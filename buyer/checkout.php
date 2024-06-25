@@ -47,7 +47,7 @@ if (isset($_POST['place_order'])) {
         if ($get_product->rowCount() > 0) {
             while ($fetch_pro = $get_product->fetch(PDO::FETCH_ASSOC)) {
                 // INSERT INTO `orders` (`id`, `user_id`, `name`, `number`, `email`, `address`, `house_number`, `method`, `product_id`, `price`, `qty`, `status`) VALUES ("sd","666d94ffca9d4", "Rustam", "bcasm2078@gmail.com", "Ktm", "11", "imepay", "bff08623-2b19-11ef-9eab-482ae306821a", 400, 3, CURRENT_TIMESTAMP,"pending");
-                $insert_order = $con->prepare("INSERT INTO `orders` (`id`, `user_id`, `name`, `number`, `email`, `address`, `house_number`, `method`, `product_id`, `price`, `qty`, `date`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, 'pending');");
+                $insert_order = $con->prepare("INSERT INTO `orders` (`id`, `user_id`, `name`, `number`, `email`, `address`, `house_number`, `method`, `product_id`, `price`, `qty`, `date_ordered`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, 'pending');");
                 $insert_order->execute([uniqid(), $user_id, $name, $phone, $email, $address, $house_number, $method, $fetch_pro['id'], $fetch_pro['price'], $_GET['qty']]); 
 
                 header('location: orders.php');
@@ -58,7 +58,7 @@ if (isset($_POST['place_order'])) {
     } else if ($verify_cart->rowCount() > 0) {
         while ($fci = $verify_cart->fetch(PDO::FETCH_ASSOC)) {
             
-            $insert_order = $con->prepare("INSERT INTO `orders` (`id`, `user_id`, `name`, `number`, `email`, `address`, `house_number`, `method`, `product_id`, `price`, `qty`, `date`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, 'pending');");
+            $insert_order = $con->prepare("INSERT INTO `orders` (`id`, `user_id`, `name`, `number`, `email`, `address`, `house_number`, `method`, `product_id`, `price`, `qty`, `date_ordered`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, 'pending');");
             $insert_order->execute([uniqid(), $user_id, $name, $phone, $email, $address, $house_number, $method, $fci['product_id'], $fci['price'], $fci['qty']]);
         }
         
@@ -157,7 +157,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                             $grand_total += $sub_total;
                             ?>
                             <div class="flex flexy">
-                                <img style="width:200px; height:200px;" src="<?php echo  $fetch_get["image"]?>" alt="Product Image">
+                                <img style="width:200px; height:200px;" src="../seller/<?php echo  $fetch_get["image"]?>" alt="Product Image">
                                 <div>
                                     <h3 class="name"><?= $fetch_get['name']; ?></h3>
                                     <p class="price"><?= $fetch_get['price']; ?>/-</p>

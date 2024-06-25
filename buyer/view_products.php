@@ -53,7 +53,7 @@ if (isset($_POST['add_to_cart'])) {
         $warning_msg[] = 'cart is already full';
     } else {
         $select_price = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status= ? LIMIT 1");
-        $select_price->execute([$product_id,"active"]);
+        $select_price->execute([$product_id, "active"]);
         $fetch_price = $select_price->fetch(PDO::FETCH_ASSOC);
         $insert_cart = $con->prepare("INSERT INTO `cart` (id, user_id, product_id, price, qty) VALUES(?,?,?,?,?)");
         $insert_cart->execute([$id, $user_id, $product_id, $fetch_price['price'], $qty]);
@@ -72,7 +72,7 @@ $query = "SELECT * FROM `products` WHERE status=? $type_filter";
 $select_products = $con->prepare($query);
 
 if ($type !== 'all') {
-    $select_products->execute([ "active",$type,]);
+    $select_products->execute(["active", $type,]);
 } else {
     $select_products->execute(["active"]);
 }
@@ -185,7 +185,7 @@ function getActiveClass($current_type, $type)
                 while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
                     ?>
                     <form action="" method="post" class="box">
-                        <img src="<?= $fetch_products['image']; ?>" class='img' />
+                        <img src="../seller/<?= $fetch_products['image']; ?>" class='img' />
                         <?php
                         if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                             echo "<div style='background-color:rgba(19, 78, 0, 0.956); color:white'>login for more features </div>";
@@ -198,7 +198,13 @@ function getActiveClass($current_type, $type)
                     </div>';
                         }
                         ?>
-                        <h3 class="name"><?= $fetch_products['name']; ?></h3>
+                        <h3 class="name"> <?php
+                        $product_name = $fetch_products['name'];
+                        if (strlen($product_name) > 20) {
+                            $product_name = htmlspecialchars(substr($product_name, 0, 20)) . '... ' . '<a style="color:#888 !important;" href="view_page.php?pid=' . $fetch_products["id"] . '">More</a>';
+                        }
+                        echo $product_name;
+                        ?> </h3>
                         <strong class="typeof"><?= $fetch_products['type'] ?></strong>
                         <input type="hidden" name="product_id" value="<?= $fetch_products['id']; ?>">
                         <div class="flex">

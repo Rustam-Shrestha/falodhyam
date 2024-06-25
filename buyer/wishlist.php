@@ -219,7 +219,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                             <form action="" method="post" class="box">
                                 <input type="hidden" name="wishlist_id" value="<?= $fetch_wishlist['id'] ?>">
                                 <div class="wishlistimg">
-                                    <img src="<?= $fetch_products['image'] ?>" alt="Product Image" class="img">
+                                    <img src="../seller/<?= $fetch_products['image'] ?>" alt="Product Image" class="img">
                                 </div>
                                 <div class="wishlist-buttons">
                                     <button type="submit" name="add_to_cart" class="btn"><i class="bx bx-cart"></i></button>
@@ -261,7 +261,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                             <form action="" method="post" class="box">
                                 <input type="hidden" name="wishlist_id" value="<?= $fetch_wishlist['id'] ?>">
                                 <div class="wishlistimg">
-                                    <img src="<?= $fetch_products['image'] ?>" alt="Product Image" class="img">
+                                    <img src="../seller/<?= $fetch_products['image'] ?>" alt="Product Image" class="img">
                                 </div>
                                 <div class="wishlist-buttons">
                                    <div class="empty">item is not available</div>

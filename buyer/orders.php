@@ -48,7 +48,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
         <!-- feetch orders from databae -->
         <?php
         // get entries from orders only we need to fetch image and other details after this 
-                $select_orders = $con->prepare("SELECT * FROM `orders` WHERE user_id = ? ORDER BY DATE DESC");
+                $select_orders = $con->prepare("SELECT * FROM `orders` WHERE user_id = ? ORDER BY date_ordered DESC");
                 $select_orders->execute([$user_id]);
                 // if any data is available execute
                 if ($select_orders->rowCount() > 0) {
@@ -71,7 +71,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                                                 <?= $fetch_order['date_ordered']; ?>
                                             </span></p>
                                         <!-- source should be #fetch_product['image'] -->
-                                        <img src="<?= $fetch_product['image']; ?>" alt="this is productimage" class="image">
+                                        <img src="../seller/<?= $fetch_product['image']; ?>" alt="this is productimage" class="image">
                                         <div class="row">
                                             <!-- the person who ordered this item -->
                                             <h3 class="name">

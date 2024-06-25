@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['yield'])) {
                     $_SESSION['user_id'] = $row["id"];
                     $_SESSION['user_name'] = $row["name"];
                     $_SESSION['user_email'] = $row["email"];
-                    header("Location: home.php");
+                    header("Location: home.php?loggedin=true");
                     exit();
                 }
             } else {

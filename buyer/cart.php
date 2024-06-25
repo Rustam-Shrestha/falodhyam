@@ -159,7 +159,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                     <!-- secretly giving cart id to server -->
                     <input type="hidden" name="cart_id" value="<?= $fetch_carts['id']; ?>">
                     <div class="cartimg">
-                        <img src="<?= $fetch_products['image'];?>" alt="lost img" class="img">
+                        <img src="../seller/<?= $fetch_products['image'];?>" alt="lost img" class="img">
                     </div>
                     <div class="desc">
                         <h1><?= $fetch_products['name']; ?></h1>
@@ -206,7 +206,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                     <!-- secretly giving cart id to server -->
                     <input type="hidden" name="cart_id" value="<?= $fetch_carts['id']; ?>">
                     <div class="cartimg">
-                        <img src="<?= $fetch_products['image'];?>" alt="lost img" class="img">
+                        <img src="../seller/<?= $fetch_products['image'];?>" alt="lost img" class="img">
                     </div>
                     <div class="desc">
                         <h1><?= $fetch_products['name']; ?></h1>

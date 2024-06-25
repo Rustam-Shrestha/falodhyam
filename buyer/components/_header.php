@@ -30,9 +30,9 @@
             <a href="wishlist.php"><i class="bx bx-heart" alt="wushlist icon"></i><sup
             class="blob"><?= $total_wishlist_items; ?></sup></a>
             <i class="bx bx-user" id="user-btn" alt="user icon"></i>
-        </div>
-        <div class="icons">
-            <button id="toggler">slide</button>
+            <div class="icons">
+                <button id="toggler"><i class='bx bx-list-plus'></i></button>
+            </div>
         </div>
     </div>
 </header>
@@ -40,12 +40,13 @@
 <form method="post">
 <div class="modal" id="modal">
     <p id="terminator">&times;</p>
-        <?php
+    <?php
         if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != "") {
-            echo '<button type="submit" name="logout" class="logout-btn btn">log out</button>';
-
+            echo '<strong style="font-size:12px;color:white">Email:</strong> <span style="font-size:12px;color:white">'.$_SESSION['user_email'].' </span><br><button type="submit" name="logout" class="logout-btn btn">log out from '.$_SESSION['user_email'].' </button>';
+            
         } else {
-            echo ' <a href="login.php" class="btn">login</a>
+             
+            echo '<a href="login.php" class="btn">login</a>
         <a href="signup.php" class="btn">signup</a>';
         }
         ?>
