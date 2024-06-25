@@ -1,0 +1,52 @@
+
+:root {
+  --green: rgba(19, 78, 0, 0.956);
+    --white: #fff;
+    --black: #000;
+    --brown: #2c0505;
+    --box-shadow: rgba(0, 0, 0, 0.25);
+    --font-primary: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+      "Lucida Sans", Arial, sans-serif;
+  }
+
+.orderlist{
+    width:80%;
+    margin: 0 auto;
+    display: flex;
+    padding:11px;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .orderlist .order{
+    border: 2px outset var(--green);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    margin: 14px 17px;
+  }
+  .order img{
+    max-width:400px;
+    width: 60%;;
+    height: auto;
+    margin: 9px;
+  }
+  .order h1{
+    margin: 11px;
+    color: var(--green);
+  
+  }
+.icons{
+    background-color: var(--green);
+
+}
+
+
+.order a{
+  color: inherit;
+  text-decoration: none;
+
+}

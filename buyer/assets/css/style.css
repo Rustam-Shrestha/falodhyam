@@ -1,0 +1,556 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+/* all the styling done in variable */
+:root {
+  --green: rgba(19, 78, 0, 0.956);
+  --white: #fff;
+  --black: #000;
+  --brown: #2c0505;
+  --box-shadow: rgba(0, 0, 0, 0.25);
+  --font-primary: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+/* giving minimum height so that it does not messup in fixzed navbar */
+body {
+  min-height: 100vh;
+}
+
+* {
+  font-family: var(--font-primary);
+}
+
+/* navigation styling starts==========+================*/
+/* ==================================================== */
+/* navigation styling starts==========+================*/
+/* ==================================================== */
+
+/* navigation bar section  */
+.header {
+  background-color: var(--green);
+  width: 80%;
+  margin: 0px auto;
+  border-radius: 13px 13px 0 0;
+  height: 4em;
+  display: flex;
+  justify-content: space-evenly;
+  font-size: 20px;
+}
+/* positioning of navbar */
+.nav-container,
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.header img {
+  width: 40px;
+  height: 40px;
+  margin: 10px 0 0 10px;
+}
+/* link stylings */
+.navbar a {
+  color: var(--white);
+  text-decoration: none;
+  margin: 0 9px;
+  line-height: 4;
+  text-transform: uppercase;
+  transform: 0.3s;
+}
+.navbar a:hover {
+  color: var(--black);
+}
+.header .icons {
+  display: none;
+  color: var(--white);
+}
+.wildcard-icons>*{
+  color: var(--white);
+  font-weight: 900;
+  font-size: 22px;
+  margin: 0 0 0 11px;
+}
+/* navigation styling ends==========+================*/
+/* ==================================================== */
+
+.carousel-container {
+  position: relative;
+  width: 80%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.carousel {
+  display: flex;
+  transition: 0.5s ease;
+}
+
+.carousel img {
+  width: 100vw;
+  height: 80vh;
+  transition: 0.5s ease;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  z-index: 1;
+  transition: 0.5s ease;
+  height: 49px;
+  width: 38px;
+  font-size: 40px;
+}
+
+.carousel-btn-prev {
+  left: 0;
+}
+
+.carousel-btn-next {
+  right: 0;
+}
+/* navigation styling ends==========+================*/
+/* ==================================================== */
+
+@media screen and (max-width: 820px) {
+  .carousel img {
+    width:100%;
+    height: auto;
+  }
+  .navbar {
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--white);
+    width: 80vw;
+    align-items: center;
+    position: relative;
+    /* top: 200px; */
+    transform: translateY(-100%);
+    z-index: 44;
+  }
+  .navbar a {
+    color: var(--green);
+  }
+  .header img {
+    position: absolute;
+    left: 80px;
+  }
+  .header .icons {
+    display: inline-block;
+  }
+  .navbar.show {
+    transform: translate(20px,60%);
+  }
+  .footer-container {
+    flex-direction: row;
+  }
+  .footer {
+    flex-direction: row;
+  }
+  .banner-img img{
+    width: 100%;
+  }
+}
+
+/* sponsored top items styling ends==========+================*/
+/* ==================================================== */
+.top-items{
+  display: flex;
+  padding:11px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.top-items .top-item{
+  box-shadow: 3px 4px 6px  var(--green);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  max-width: 180px;
+  margin: 14px 17px;
+}
+.top-item:hover{
+  box-shadow: 3px 4px 6px  var(--brown   );
+  cursor: pointer;
+  transition: .7s;
+  transform: scale(105%);
+}
+.top-item img{
+  width: 60px;
+  height:60px;
+  border-radius: 50%;
+  margin: 9px;
+}
+.top-item h1{
+  margin: 11px;
+  color: var(--green);
+
+}
+.top-items a {
+  text-decoration: none;
+  color: inherit;
+  outline: none;
+}
+
+
+
+
+
+/* ============================================== */
+/* end of top item======================== */
+
+
+/* ============================================== */
+/* sponsors======================== */
+.sponsored{
+  width:80%;
+  margin: 0 auto;
+  position: relative;
+}
+.banner-img{
+  display: inline-block;
+}
+.banner-desc{
+  display: inline-block;
+  
+}
+/* ============================================== */
+/* sponsors end======================== */
+
+/* ============================================== */
+/* offers======================== */
+
+.banner-img img{
+  max-width:400px;
+  min-width:100px;
+  
+}
+.banner-desc{
+  position: absolute;
+  right: 30%;
+  top: 30%;
+}
+.banner-desc h1{
+  color: var(--green);
+  font-size: 28px;  
+}
+.banner-desc .btn, .banner-desc  p{
+  line-height: 4 ;
+}
+/* ============================================== */
+/* offers======================== */
+
+
+/* ============================================== */
+/* trendy======================== */
+
+.trendings{
+  display: flex;
+  padding:11px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.trendings .trending-item{
+  box-shadow: 3px 4px 6px  var(--green);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  max-width: 180px;
+  margin: 14px 17px;
+}
+.trending-item:hover{
+  box-shadow: 3px 4px 6px  var(--brown );
+  cursor: pointer;
+  transition: .7s;
+  transform: scale(105%);
+}
+.trending-item img{
+  width:100%;
+  height:100%;
+  margin: 9px;
+}
+.trendings .trending-item h1{
+  margin: 11px;
+  color: var(--green);
+
+}
+
+.trendings a {
+  text-decoration: none; 
+  color: inherit; 
+  outline: none; 
+}
+
+
+
+
+/* ============================================== */
+/* trendy end======================== */
+
+
+
+
+
+/* ============================================== */
+/* footer styling starting======================== */
+
+.more-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 80px;
+}
+.more-links ul li a:hover {
+  color: var(--green);
+}
+.more-links > * {
+  line-height: 27px;
+  margin: 0 0 0 38px;
+}
+.footer-container {
+  background-color: var(--black);
+  color: var(--white);
+  position: relative;
+  min-height: 45vh;
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-logo img {
+  position: absolute;
+  left: 50%;
+  top: 29px;
+  margin: 7px 0 8px 0;
+}
+.about ul li,
+.services ul li,
+.quick-links ul li {
+  list-style-type: none;
+}
+.about ul li a,
+.services ul li a,
+.quick-links ul li a {
+  color: var(--white);
+  text-decoration: none;
+}
+
+.social-links {
+  display: flex;
+  align-items: flex-end;
+}
+.social-links i {
+  width: 30px;
+  height: 30px;
+  line-height: 25px;
+  border-radius: 50%;
+  background-color: var(--white);
+  text-align: center;
+  color: var(--green);
+  cursor: pointer;
+  padding: 0.6rem;
+  font-size: 1.5rem;
+}
+.social-links i:hover {
+  color: var(--white);
+  background-color: var(--green);
+}
+.last-footer {
+  text-align: center;
+  margin: 10px 0 19px 0;
+}
+/* ============================================== */
+/* footer styling ending======================== */
+
+
+/* ============================================== */
+/* utilities sytlings here======================== */
+.btn{
+  padding: 13px;
+  color:var(--green);
+  border: 2px inset var(--green);
+  background-color: var(--white);
+  font-size: 18px;
+  border-radius: 14px;
+  
+}
+
+.btn:hover{
+  color:var(--white);
+  border: 2px inset var(--white);
+  background-color: var(--green);
+  font-size: 18px;
+  transition: .5s;
+  cursor: pointer;
+}
+
+
+/* wildcard uitilty start */
+/* ------------------------- */
+.sign-board{
+  width:80%;
+  min-height:20vh;
+  background-color: var(--green);
+  color: var(--white);
+  margin: 0 auto;
+  padding: 24px 0;
+} 
+.sign-board h1, .signboard strong{
+  color:inherit;
+  text-align: center;
+  padding: 24px 0;
+  
+}
+/* wildcard uitilty end 5 */
+/* ------------------------- */
+
+
+.about-content, .banner{
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about-detail{
+  width:80%;
+  margin: 0 auto;
+  position: relative;
+}
+.about-img{
+  display: inline-block;
+}
+.about-desc{
+  display: inline-block;
+  position: absolute;
+  right: 20%;
+  top: 20%;
+}
+
+
+.about-img img{
+  max-width:400px;
+  min-width:100px;
+  
+}
+
+.about-desc h1{
+  color: var(--green);
+  font-size: 28px;  
+}
+.about-desc .btn, .about-desc  p{
+  line-height: 4 ;
+}
+
+
+.modal {
+  position: fixed;
+  top: 2%;
+  right: 20%;
+  z-index: 9999;
+  background: var(--brown); /* semi-transparent background */
+  padding: 100px;
+  display: none;
+  transition:.5s;
+}
+
+.modal p {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  color: tomato;
+  cursor: pointer;
+  padding: 4px;
+  border:1px solid tomato;
+}
+/* p:hover{
+  color: var(--white);
+  background-color: tomato;
+  border:1px solid var(--white);
+
+} */
+
+
+.blob{
+  padding: 4px;
+  border-radius: 50%;
+  background-color: var(--brown);
+}
+.carts .box-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.box-container .item{
+  height:400px;
+}
+
+.summary-buttons{
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 9px 0 ;
+  border: 3px solid var(--brown);
+  border-radius: 18px;
+}
+
+.empty{
+  color: var(--white);
+  background: var(--green);
+  padding: 9px;
+  margin: 28px 0;
+}
+
+/* cancellable lable */
+
+
+
+
+.label-container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 12px 0;
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.message {
+  margin-right: auto;
+  margin-left: 10px;
+  color: var(--black);
+  font-size: 21px;
+  font-weight: 400;
+  
+}
+
+.close-btn {
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--black)
+}
+
+.close-btn:hover {
+  color: #666;
+  
+}
+

@@ -1,0 +1,24 @@
+legend{
+    background-color: var(--green);
+    border: 2px solid var(--black);
+    color: white;
+}
+.login{
+    width: 80%;
+    margin: 12px auto;
+}
+fieldset{
+    padding: 14px;
+}
+form{
+    width: 80%;
+    margin: 12px auto;
+    
+}
+form input{
+    width:80%;
+    height: 2em;
+    font-size: large;
+    margin:18px 0;  
+    border-radius: 12px;  
+}

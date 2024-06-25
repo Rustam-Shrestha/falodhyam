@@ -1,0 +1,95 @@
+:root {
+  --green: rgba(19, 78, 0, 0.956);
+  --white: #fff;
+  --black: #000;
+  --brown: #2c0505;
+  --box-shadow: rgba(0, 0, 0, 0.25);
+  --font-primary: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+*{
+  text-decoration: none;
+}
+
+.products {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  padding: 11px;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.products .item{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.products .item .box {
+  border: 2px outset var(--green);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  margin: 14px 17px;
+  height: 450px;
+  max-width: 400px;
+  min-width: 200px;
+}
+.item .box img {
+  width : 200px;
+  border: 1px solid black;
+  height :200px;
+  object-fit: contain;
+}
+.item .box h3 {
+  margin: 11px;
+  color: var(--green);
+}
+.buttons {
+  background-color: var(--green);
+ width: 200px;
+  padding: 8px;
+  border-radius: 19px;
+  color: inherit;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 auto;
+
+}
+.buttons button {
+  background: none;
+  outline: none;
+  border: none;
+  justify-content: space-evenly;
+  font-size: 18px;
+}
+.buttons button i,
+.buttons a {
+  font-size: 18px;
+  color: var(--white);
+  cursor: pointer;
+  margin: 0 15px;
+}
+.container {
+  width: 80%;
+  overflow-x: scroll;
+  white-space: nowrap;
+  padding: 20px 0;
+  margin: 18px auto;
+}
+
+.category-box {
+  display: inline-block;
+  width: 150px;
+  height: 40px;
+  border: 2px solid green;
+  border-radius: 10px;
+  margin-right: 10px;
+  text-align: center;
+  line-height: 40px;
+  font-size: 14px;
+}
