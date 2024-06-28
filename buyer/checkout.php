@@ -1,4 +1,4 @@
-<?php 
+<?php
 include "./components/connection.php";
 session_start();
 
@@ -13,6 +13,9 @@ if (isset($_POST['logout'])) {
     header("location: login.php?logout=1");
     $message[] = "logged out of system";
 }
+if (isset($_GET['overflow']) && $_GET['overflow'] == 1) {
+    $warning_msg[] = "Not enough quantity in stock";
+}
 
 // Fetch user details
 $user_query = $con->prepare("SELECT * FROM `buyers` WHERE id = ?");
@@ -20,12 +23,13 @@ $user_query->execute([$user_id]);
 $user_details = $user_query->fetch(PDO::FETCH_ASSOC);
 
 // When we place an order 
+// When we place an order 
 if (isset($_POST['place_order'])) {
     $name = $user_details['name'];
     $phone = $user_details['phone'];
     $email = $user_details['email'];
     $method = filter_var($_POST['method'], FILTER_SANITIZE_STRIPPED);
-    
+
     if ($_POST['address_option'] == 'existing') {
         $address = $user_details['address'];
         $house_number = $user_details['house_number'];
@@ -39,42 +43,72 @@ if (isset($_POST['place_order'])) {
     $verify_cart = $con->prepare("SELECT * FROM `cart` WHERE user_id = ?");
     $verify_cart->execute([$user_id]);
 
-    // If we get product_id from URL
+    // first way: directly buy a product
     if (isset($_GET['get_id'])) {
-        $get_product = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status=? LIMIT 1");
-        $get_product->execute([$_GET['get_id'], "active"]);
+        // If we get product_id from URL
+        $get_product = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status = ? LIMIT 1");
+        $get_product->execute([$_GET['get_id'], "Active"]);
 
         if ($get_product->rowCount() > 0) {
-            while ($fetch_pro = $get_product->fetch(PDO::FETCH_ASSOC)) {
-                // INSERT INTO `orders` (`id`, `user_id`, `name`, `number`, `email`, `address`, `house_number`, `method`, `product_id`, `price`, `qty`, `status`) VALUES ("sd","666d94ffca9d4", "Rustam", "bcasm2078@gmail.com", "Ktm", "11", "imepay", "bff08623-2b19-11ef-9eab-482ae306821a", 400, 3, CURRENT_TIMESTAMP,"pending");
-                $insert_order = $con->prepare("INSERT INTO `orders` (`id`, `user_id`, `name`, `number`, `email`, `address`, `house_number`, `method`, `product_id`, `price`, `qty`, `date_ordered`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, 'pending');");
-                $insert_order->execute([uniqid(), $user_id, $name, $phone, $email, $address, $house_number, $method, $fetch_pro['id'], $fetch_pro['price'], $_GET['qty']]); 
+            $fetch_pro = $get_product->fetch(PDO::FETCH_ASSOC);
+            $available_stock = $fetch_pro['available_stock'];
+            if ($available_stock >= $_GET['qty']) {
+                $available_stock -= $_GET['qty'];
+                $update_stock = $con->prepare("UPDATE products SET available_stock = ? WHERE id = ?");
+                $update_stock->execute([$available_stock, $fetch_pro['id']]);
+
+                $insert_order = $con->prepare("INSERT INTO `orders` (`id`, `user_id`, `name`, `number`, `email`, `address`, `house_number`, `method`, `product_id`, `price`, `qty`, `s-id`, `date_ordered`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, 'pending')");
+                $insert_order->execute([uniqid(), $user_id, $name, $phone, $email, $address, $house_number, $method, $fetch_pro['id'], $fetch_pro['price'], $_GET['qty'], $fetch_pro['s-id']]);
 
                 header('location: orders.php');
+                exit;
+            } else {
+                header('location: view_products.php?overflow=1');
+                exit;
             }
         } else {
             $warning_msg[] = "Something went wrong";
         }
-    } else if ($verify_cart->rowCount() > 0) {
-        while ($fci = $verify_cart->fetch(PDO::FETCH_ASSOC)) {
-            
-            $insert_order = $con->prepare("INSERT INTO `orders` (`id`, `user_id`, `name`, `number`, `email`, `address`, `house_number`, `method`, `product_id`, `price`, `qty`, `date_ordered`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, 'pending');");
-            $insert_order->execute([uniqid(), $user_id, $name, $phone, $email, $address, $house_number, $method, $fci['product_id'], $fci['price'], $fci['qty']]);
-        }
-        
-        $delete_cart_id = $con->prepare("DELETE FROM `cart` WHERE user_id = ?");
-        $delete_cart_id->execute([$user_id]);
-        
-        header('location: orders.php');
     } else {
-        $warning_msg[] = "Something went wrong";
+        // If there are items in the cart
+        if ($verify_cart->rowCount() > 0) {
+            while ($fci = $verify_cart->fetch(PDO::FETCH_ASSOC)) {
+                $get_product = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status = ? LIMIT 1");
+                $get_product->execute([$fci['product_id'], "Active"]);
+
+                if ($get_product->rowCount() > 0) {
+                    $fetch_pro = $get_product->fetch(PDO::FETCH_ASSOC);
+                    $available_stock = $fetch_pro['available_stock'];
+                    if ($available_stock >= $fci['qty']) {
+                        $available_stock -= $fci['qty'];
+                        $update_stock = $con->prepare("UPDATE products SET available_stock = ? WHERE id = ?");
+                        $update_stock->execute([$available_stock, $fetch_pro['id']]);
+
+                        $insert_order = $con->prepare("INSERT INTO `orders` (`id`, `user_id`, `name`, `number`, `email`, `address`, `house_number`, `method`, `product_id`, `price`, `qty`, `s-id`, `date_ordered`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, 'pending')");
+                        $insert_order->execute([uniqid(), $user_id, $name, $phone, $email, $address, $house_number, $method, $fetch_pro['id'], $fetch_pro['price'], $fci['qty'], $fetch_pro['s-id']]);
+                    } else {
+                        // Handle insufficient stock for a product in the cart
+                        header('location: view_cart.php?overflow=1');
+                        exit;
+                    }
+                }
+            }
+
+            $delete_cart_id = $con->prepare("DELETE FROM `cart` WHERE user_id = ?");
+            $delete_cart_id->execute([$user_id]);
+
+            header('location: orders.php');
+            exit;
+        } else {
+            $warning_msg[] = "Something went wrong";
+        }
     }
 }
 
 if (isset($_POST['delete_product'])) {
     $cart_pros = $con->prepare("SELECT COUNT(*) FROM `cart` WHERE user_id = ?");
     $cart_pros->execute([$user_id]);
-    $num_cart_pros = $cart_pros->fetchColumn(); 
+    $num_cart_pros = $cart_pros->fetchColumn();
 
     if ($num_cart_pros > 1) {
         $proid = $_POST['product_id'];
@@ -94,6 +128,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -106,16 +141,24 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
             width: 80%;
             margin: 0 auto;
         }
+
         .name {
             font-size: 26px !important;
             text-align: center;
         }
-        .price, .grand-total {
+
+        .price,
+        .grand-total {
             text-align: center;
         }
-        .box-container .flex div h3, .box-container .flex div p {}
 
-        .checkout input, .checkout select, .checkout p, .checkout h3 {
+        .box-container .flex div h3,
+        .box-container .flex div p {}
+
+        .checkout input,
+        .checkout select,
+        .checkout p,
+        .checkout h3 {
             width: 80vw;
             height: 40px;
             border-radius: 20px;
@@ -134,71 +177,76 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
         }
     </style>
 </head>
+
 <body>
     <?php include "./components/_header.php"; ?>
-    
-    <center><h3>Proceed with the Billing details</h3></center>
+
+    <center>
+        <h3>Proceed with the Billing details</h3>
+    </center>
     <div class="checkout">
         <div class="title">
             <br><br>
-            <?php include "./components/alert.php"; ?>
             <br><br>
             <div class="summary">
                 <div class="box-container">
                     <form action="" method="post">
-                    <?php
-                    $grand_total = 0;
-                    if (isset($_GET['get_id'])) {
-                        $select_get = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status= ?");
-                        $select_get->execute([$_GET['get_id'],"active"]);
-                        while ($fetch_get = $select_get->fetch(PDO::FETCH_ASSOC)) {
-                            $sub_total = $fetch_get['price'];
-                            $sub_total *=$_GET["qty"]; 
-                            $grand_total += $sub_total;
-                            ?>
-                            <div class="flex flexy">
-                                <img style="width:200px; height:200px;" src="../seller/<?php echo  $fetch_get["image"]?>" alt="Product Image">
-                                <div>
-                                    <h3 class="name"><?= $fetch_get['name']; ?></h3>
-                                    <p class="price"><?= $fetch_get['price']; ?>/-</p>
-                                </div>
-                            </div>
-                            <?php
-                        }
-                    } else {
-                        $select_cart = $con->prepare("SELECT * FROM `cart` WHERE user_id = ?");
-                        $select_cart->execute([$user_id]);
-                        if ($select_cart->rowCount() > 0) {
-                            while ($fetch_cart = $select_cart->fetch(PDO::FETCH_ASSOC)) {
-                                $select_products = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status= ?");
-                                $select_products->execute([$fetch_cart['product_id'],"active"]);
-                                $fetch_product = $select_products->fetch(PDO::FETCH_ASSOC);
-                                $sub_total = ($fetch_cart['qty'] * $fetch_product['price']);
+                        <?php include "./components/alert.php"; ?>
+                        <?php
+                        $grand_total = 0;
+                        if (isset($_GET['get_id'])) {
+                            $select_get = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status= ?");
+                            $select_get->execute([$_GET['get_id'], "Active"]);
+                            while ($fetch_get = $select_get->fetch(PDO::FETCH_ASSOC)) {
+                                $sub_total = $fetch_get['price'];
+                                $sub_total *= $_GET["qty"];
                                 $grand_total += $sub_total;
                                 ?>
                                 <div class="flex flexy">
+                                    <img style="width:200px; height:200px;"
+                                        src="../seller/img/<?php echo $fetch_get["image"] ?>" alt="Product Image">
                                     <div>
-                                        <img style="width:200px; height:200px;" src="<?php echo $fetch_product['image']?>" alt="Product Image">
-                                        <h3 class="name"><?= $fetch_product['name']; ?></h3>
-                                        <p class="price"><?= $fetch_cart['qty']; ?> x <?= $fetch_product['price']; ?></p>
-                                        <input type="hidden" name="product_id" value="<?= $fetch_product['id']; ?>">
-                                        <button class="btn" type="submit" name="delete_product">delete</button>
+                                        <h3 class="name"><?= $fetch_get['name']; ?></h3>
+                                        <p class="price"><?= $fetch_get['price']; ?>/-</p>
                                     </div>
                                 </div>
                                 <?php
                             }
                         } else {
-                            echo "<p>No products added yet</p>";
+                            $select_cart = $con->prepare("SELECT * FROM `cart` WHERE user_id = ?");
+                            $select_cart->execute([$user_id]);
+                            if ($select_cart->rowCount() > 0) {
+                                while ($fetch_cart = $select_cart->fetch(PDO::FETCH_ASSOC)) {
+                                    $select_products = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status= ?");
+                                    $select_products->execute([$fetch_cart['product_id'], "Active"]);
+                                    $fetch_product = $select_products->fetch(PDO::FETCH_ASSOC);
+                                    $sub_total = ($fetch_cart['qty'] * $fetch_product['price']);
+                                    $grand_total += $sub_total;
+                                    ?>
+                                    <div class="flex flexy">
+                                        <div>
+                                            <img style="width:200px; height:200px;"
+                                                src="../seller/img/<?php echo $fetch_product['image'] ?>" alt="Product Image">
+                                            <h3 class="name"><?= $fetch_product['name']; ?></h3>
+                                            <p class="price"><?= $fetch_cart['qty']; ?> x <?= $fetch_product['price']; ?></p>
+                                            <input type="hidden" name="product_id" value="<?= $fetch_product['id']; ?>">
+                                            <button class="btn" type="submit" name="delete_product">delete</button>
+                                        </div>
+                                    </div>
+                                    <?php
+                                }
+                            } else {
+                                echo "<p>No products added yet</p>";
+                            }
                         }
-                    }
-                    ?>
+                        ?>
                     </form>
                 </div>
                 <div class="grand-total"><span>Total payable: </span> Rs. <?= $grand_total; ?>/-</div>
             </div>
             <h1>Checkout summary</h1>
             <p>You are paying for all the products. Get your credit cards or wallet ready or go away.</p>
-          
+
         </div>
         <div class="row">
             <form action="" method="post" onsubmit="return validateForm()">
@@ -227,9 +275,11 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                         </div>
                         <div id="existing_address_fields" style="display: none;">
                             <p>Existing Address: <span>*</span></p>
-                            <input type="text" name="existing_address" value="<?= $user_details['address']; ?>" readonly>
+                            <input type="text" name="existing_address" value="<?= $user_details['address']; ?>"
+                                readonly>
                             <p>House Number: <span>*</span></p>
-                            <input type="text" name="existing_house_number" value="<?= $user_details['house_number']; ?>" readonly>
+                            <input type="text" name="existing_house_number"
+                                value="<?= $user_details['house_number']; ?>" readonly>
                         </div>
                         <div id="new_address_fields" style="display: none;">
                             <p>Address: <span>*</span></p>
@@ -243,7 +293,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                                 ?>
                             </select>
                             <p>House number: <span>*</span></p>
-                            <input type="text" name="house_number" id="house_number" placeholder="Enter your house number" maxlength="8">
+                            <input type="text" name="house_number" id="house_number"
+                                placeholder="Enter your house number" maxlength="8">
                         </div>
                         <div class="input-field">
                             <p>Payment method: <span>*</span></p>
@@ -262,7 +313,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
     <?php include "./components/_footer.php"; ?>
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
     <script>
-         <?php include "./js/interact.js"; ?>
+        <?php include "./js/interact.js"; ?>
 
         function toggleAddressFields() {
             var addressOption = document.getElementById('address_option').value;
@@ -292,9 +343,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
         }
 
         // Ensure the correct fields are shown on page load if there's a value already selected
-        window.onload = function() {
+        window.onload = function () {
             toggleAddressFields();
         };
     </script>
 </body>
+
 </html>

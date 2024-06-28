@@ -27,7 +27,7 @@ if (isset($_POST['add_to_wishlist'])) {
         $warning_msg[] = 'product already exists in your wishlist';
     } else {
         $select_price = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status= ? LIMIT 1");
-        $select_price->execute([$product_id, "active"]);
+        $select_price->execute([$product_id, "Active"]);
         $fetch_price = $select_price->fetch(PDO::FETCH_ASSOC);
         $insert_wishlist = $con->prepare("INSERT INTO `wishlist` (id, user_id, product_id, price) VALUES(?,?,?,?)");
         $insert_wishlist->execute([$id, $user_id, $product_id, $fetch_price['price']]);
@@ -53,7 +53,7 @@ if (isset($_POST['add_to_cart'])) {
         $warning_msg[] = 'cart is already full';
     } else {
         $select_price = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status= ? LIMIT 1");
-        $select_price->execute([$product_id, "active"]);
+        $select_price->execute([$product_id, "Active"]);
         $fetch_price = $select_price->fetch(PDO::FETCH_ASSOC);
         $insert_cart = $con->prepare("INSERT INTO `cart` (id, user_id, product_id, price, qty) VALUES(?,?,?,?,?)");
         $insert_cart->execute([$id, $user_id, $product_id, $fetch_price['price'], $qty]);
@@ -72,21 +72,24 @@ $query = "SELECT * FROM `products` WHERE status=? $type_filter";
 $select_products = $con->prepare($query);
 
 if ($type !== 'all') {
-    $select_products->execute(["active", $type,]);
+    $select_products->execute(["Active", $type,]);
 } else {
-    $select_products->execute(["active"]);
+    $select_products->execute(["Active"]);
 }
 
-// Function to get active class for the category
+// Function to get Active class for the category
 function getActiveClass($current_type, $type)
 {
-    return $current_type === $type ? 'active' : '';
+    return $current_type === $type ? 'Active' : '';
 }
 // if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
 //     header('Location: login.php?attempt=1');
 //     exit();
 // }
 
+if(isset($_GET['overflow'])&&$_GET['overflow']==1){
+    $warning_msg[] ="Not enough quantity in stock";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -108,7 +111,7 @@ function getActiveClass($current_type, $type)
             display: inline-block;
         }
 
-        .category-box.active {
+        .category-box.Active {
             background-color: rgba(19, 78, 0, 0.956);
             color: white;
         }
@@ -185,7 +188,7 @@ function getActiveClass($current_type, $type)
                 while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
                     ?>
                     <form action="" method="post" class="box">
-                        <img src="../seller/<?= $fetch_products['image']; ?>" class='img' />
+                        <img src="../seller/img/<?= $fetch_products['image']; ?>" class='img' />
                         <?php
                         if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                             echo "<div style='background-color:rgba(19, 78, 0, 0.956); color:white'>login for more features </div>";
@@ -209,7 +212,7 @@ function getActiveClass($current_type, $type)
                         <input type="hidden" name="product_id" value="<?= $fetch_products['id']; ?>">
                         <div class="flex">
                             <p class="price">price: Rs. <?= $fetch_products['price']; ?>/-
-                                <input class="btn quantity" type="number" name="qty" required value="1" min="1" max="99"
+                                <input class="btn quantity" type="number" name="qty" required value="1" min="1" max="<?= $fetch_products['available_stock']?>"
                                     maxlength="2" data-product-id="<?= $fetch_products['id']; ?>">
                             </p>
                         </div>

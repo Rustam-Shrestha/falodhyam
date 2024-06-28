@@ -71,7 +71,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                                                 <?= $fetch_order['date_ordered']; ?>
                                             </span></p>
                                         <!-- source should be #fetch_product['image'] -->
-                                        <img src="../seller/<?= $fetch_product['image']; ?>" alt="this is productimage" class="image">
+                                        <img src="../seller/img/<?= $fetch_product['image']; ?>" alt="this is productimage" class="image">
                                         <div class="row">
                                             <!-- the person who ordered this item -->
                                             <h3 class="name">

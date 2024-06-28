@@ -4,13 +4,23 @@ include 'component/dbconnect.php';
 ?>
 <?php
 
-session_start();
-$sellerid=$_SESSION['id'];
+session_start(); // Start the session
+
+$sellerid = isset($_SESSION['id']) ? $_SESSION['id'] : null;
+
+if (!$sellerid) {
+    header("Location: dashboard.php");
+    exit;
+}
+
+
 
 if(isset($_POST['publish'])){
     $productname = $_POST['name'];
     $productprice = $_POST['price'];
     $productdetail = $_POST['detail'];
+    $producttype=$_POST['producttype'];
+    $productstock=$_POST['stock'];
     $image = $_FILES['image']['name'];
     $image_tmp_name = $_FILES['image']['tmp_name'];
     $image_folder = "img/".$image;
@@ -20,7 +30,7 @@ if(isset($_POST['publish'])){
 
     
     // Prepare the SQL statement with placeholders
-    $stmt = $conn->prepare("INSERT INTO `sellerproducts` (`p-name`, `p-price`, `p-image`, `p-detail`, `p-status`,`s-id`) VALUES (?, ?, ?, ?, ?,?)");
+    $stmt = $conn->prepare("INSERT INTO `products` (`name`, `price`, `image`, `product_detail`, `status`,`s-id`,`type`,`available_stock`) VALUES (?, ?, ?, ?, ?,?,?,?)");
 
     // Bind parameters to the placeholders and execute the statement
     $stmt->bindParam(1, $productname);
@@ -29,7 +39,8 @@ if(isset($_POST['publish'])){
     $stmt->bindParam(4, $productdetail);
     $stmt->bindParam(5, $status);
     $stmt->bindParam(6,$sellerid);
-
+    $stmt->bindParam(7,$producttype); 
+    $stmt->bindParam(8,$productstock);
     // Execute the prepared statement
        if ($stmt->execute()) {
         // Upload the image file to the specified folder
@@ -49,13 +60,14 @@ if(isset($_POST['draft'])){
     $productname = $_POST['name'];
     $productprice = $_POST['price'];
     $productdetail = $_POST['detail'];
+    $productstock=$_POST['stock'];
     $image = $_FILES['image']['name'];
     $image_tmp_name = $_FILES['image']['tmp_name'];
-    $image_folder = "../img/".$image;
+    $image_folder = "img/".$image;
     $status = 'deactive';
 
     // Prepare the SQL statement with placeholders
-    $stmt = $conn->prepare("INSERT INTO `sellerproducts` (`p-name`, `p-price`, `p-image`, `p-detail`, `p-status`,`s-id`) VALUES (?, ?, ?, ?, ?,?)");
+    $stmt = $conn->prepare("INSERT INTO `products` (`name`, `price`, `image`, `product_detail`, `status`,`s-id`,`available_stock`) VALUES (?, ?, ?, ?, ?,?,?,?)");
 
     // Bind parameters to the placeholders and execute the statement
     $stmt->bindParam(1, $productname);
@@ -64,6 +76,7 @@ if(isset($_POST['draft'])){
     $stmt->bindParam(4, $productdetail);
     $stmt->bindParam(5, $status);
     $stmt->bindParam(6,$sellerid);
+    $stmt->bindParam(7,$productstock);
        // Execute the prepared statement
        if ($stmt->execute()) {
         // Upload the image file to the specified folder
@@ -88,7 +101,7 @@ if(isset($_POST['draft'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product Page</title>
     <!-- <link rel="stylesheet" href="../style/two.css"> -->
-    <link rel="stylesheet" href="../style/original.css">
+    <link rel="stylesheet" href="style/original.css">
 </head>
 
 <body>
@@ -117,9 +130,46 @@ if(isset($_POST['draft'])){
 
 
                     <div class="input-field">
-                        <label for="">Product Price</label>
+                        <label for="">Product Price Per Kg </label>
+                        <!-- <select name="" id="">
+<option value="">kg</option>
+<option value="">GRAM</option>
+<option value=""></option>
+ </select> -->
                         <input type="text" name="price" maxlength="26" placeholder="add products price" required>
                     </div>
+
+
+                    <div class="input-field">
+                        <label for="">Available Stock </label>
+                        <input type="number" name="stock" maxlength="5" placeholder="add total products available" required>
+                    </div>
+
+
+
+
+
+
+                    <div class="input-field">
+                        <label for="">product type</label>
+                      <div>
+                        <select name="producttype" id="Type">
+                        <option value="Others">Others</option>    
+                            <option value="Drupes">Drupes</option>
+                            <option value="Pomes">Pomes</option>
+                            <option value="Citrus Fruits">Citrus Fruits</option>
+                            <option value="Melons">Melons</option>
+                            <option value="Dried Fruits">Dried Fruits</option>
+                            <option value="Tropical Fruits">Tropical Fruits</option>
+                        <option value="Berries">Berries</option>                          
+                        
+                        </select required>
+                        </div>
+
+                    </div>
+
+
+
 
                     <div class="input-field">
                         <label for="">product detail</label>

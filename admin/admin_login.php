@@ -23,7 +23,7 @@
 }
 body{
     /* background:yellow; */
-    background-image: url('../img/body-bg.jpg');
+    background-image: url('../seller/img/body-bg.jpg');
     width: 100%;
 
 }
@@ -174,7 +174,7 @@ width:22%;
 
 <h1>Admin Login </h1>
 <div class="input-field">
-    <img class="logo" src="../sellerimage/ourlogo.jpg" alt="no image">
+    <img class="logo" src="../seller/sellerimage/ourlogo.jpg" alt="no image">
 
 </div> 
 
@@ -212,7 +212,7 @@ $email=$_POST['email'];
 $password=$_POST['password'];
 
 
-$checkemail=$conn->prepare("SELECT * FROM `headadmin` WHERE `useremail` = ?");
+$checkemail=$conn->prepare("SELECT * FROM `admin` WHERE `useremail` = ?");
 $checkemail->execute([$email]);
 
 if($checkemail->rowCount()>0){

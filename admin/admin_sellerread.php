@@ -1,29 +1,30 @@
 <?php
 include 'navbar.php';
 include 'component/dbconnect.php';
-
- session_start();
- $adminid= isset($_SESSION['id'])?$_SESSION['id'] :null;
- if(!isset($adminid)){
-       
-    header("location:admin_login.php");
-exit;
+session_start();
+$adminid= isset( $_SESSION['adminid'])?$_SESSION['adminid'] :null;
+if(!isset($adminid)){
+      
+   header("location:admin_login.php");
+exit();
 }
 
+echo $adminid."vaneko tyo ho";
 
 
-$admin=$conn->prepare("SELECT * FROM `headadmin` WHERE `id`=? ");
+
+$admin=$conn->prepare("SELECT * FROM `admin` WHERE `id`=? ");
 $admin->execute([$adminid]);
 if($admin->rowCount()>0){
-
+    
     echo"The admin id is".$adminid;
     echo "<a href='logout.php'>LOGOUT</a>";
-
+    
 }
 if(isset($_POST['delete'])){
-
+    
     $sellerval=$_POST['seller-id'];
-$seller=$conn->prepare("DELETE FROM `seller` WHERE `seller`.`s-id` = ?");
+$seller=$conn2->prepare("DELETE FROM `seller` WHERE `seller`.`s-id` = ?");
 $seller->execute([$sellerval]);
 
 
@@ -38,20 +39,20 @@ $seller->execute([$sellerval]);
 
 <style>
 
-*{
-    margin:0;
+    *{
+        margin:0;
     padding:0;
 }
 
-    :root {
-     --selenagreen: #87a243;
+:root {
+    --selenagreen: #87a243;
     --green: #7cab05;
     --light-green: #e0ffcd;
     --box-shadow: 0 0 10px rgba(0 0 0/15%);
 }
 
 .admin-container{
-border:solid 2px red;
+    border:solid 2px red;
 
 
 }
@@ -105,8 +106,8 @@ margin-bottom:23px;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="../style/one.css">
-    <link rel="stylesheet" href="../style/original.css">
+    <link rel="stylesheet" href="style/one.css">
+    <link rel="stylesheet" href="style/original.css">
 </head>
 <body>
     
@@ -173,7 +174,7 @@ margin-bottom:23px;
           
           <?php
 
-$seller=$conn->prepare("SELECT * FROM `seller`");
+$seller=$conn2->prepare("SELECT * FROM `seller`");
 $seller->execute();
 
 if($seller->rowCount()>0)
@@ -194,7 +195,7 @@ if($seller->rowCount()>0)
 <input type="hidden" name="seller-id"value="<?=$fetchseller['s-id']  ?>">      
 
 <div class="farmerpimage">
-<img id="sellerimg"src="../seller/img/<?= $fetchseller['s-profile']; ?>" alt="">
+<img id="sellerimg"src="./../seller/img/<?= $fetchseller['s-pan_card']; ?>" alt="">
 </div>
 
 
@@ -211,8 +212,8 @@ if(a!=='CONFIRM'){ exit;}
 ">Delete</button> -->
 <button type="submit" name="delete" class="btn" onclick="confirmDelete()">Delete</button>
 
-
-<a class="viewpath btn" href="admin_readproduct.php?post_id=<?= $fetch_product['p-id'];?> ?sid=<?= $fetch_foreign['s-id']; ?>" >Registered</a>
+<a class="viewpath btn" href="admin_readproduct.php?post_id=<?= $fetch_product['id'];?> ?sid=<?= $fetch_foreign['s-id']; ?>" >Registered</a>
+<a class="viewpath btn" href="admin_dashboard.php " > Go Back</a>
 
 </div>
 

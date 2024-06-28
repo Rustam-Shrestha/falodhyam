@@ -14,7 +14,7 @@
 }
 
 body{
-    background:url('../img/body-bg.jpg');
+    background:url('img/body-bg.jpg');
 fit:content;
     width:90%;
 }
@@ -174,7 +174,7 @@ backdrop-filter:blur(20px);
 
 
 <header class="header">
-<a id="firstlogo"href=""><img id="logo" src="../sellerimage/ourlogo.jpg" alt="no-image" srcset="">
+<a id="firstlogo"href=""><img id="logo" src="sellerimage/ourlogo.jpg" alt="no-image" srcset="">
 <!-- <span id="companyname">FalfulKarobar</span> -->
 <!-- <i class="bx bx-list-plus" id="menu-btn"></i> -->
 

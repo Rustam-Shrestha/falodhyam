@@ -27,7 +27,7 @@ if (isset($_POST['add_wishlist'])) {
 
     } else {
         $select_price = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status= ? LIMIT 1");
-        $select_price->execute([$product_id,"active"]);
+        $select_price->execute([$product_id,"Active"]);
         $fetch_price = $select_price->fetch(PDO::FETCH_ASSOC);
         $insert_wishlist = $con->prepare("INSERT INTO `wishlist` (id, user_id, product_id, price) VALUES(?,?,?,?)");
         $insert_wishlist->execute([$id, $user_id, $product_id, $fetch_price['price']]);
@@ -55,7 +55,7 @@ if (isset($_POST['add_to_cart'])) {
 
     } else {
         $select_price = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status= ? LIMIT 1");
-        $select_price->execute([$product_id, "active"]);
+        $select_price->execute([$product_id, "Active"]);
         $fetch_price = $select_price->fetch(PDO::FETCH_ASSOC);
         $insert_cart = $con->prepare("INSERT INTO `cart` (id, user_id, product_id, price, qty) VALUES(?,?,?,?,?)");
         $insert_cart->execute([$id, $user_id, $product_id, $fetch_price['price'], $qty]);
@@ -211,7 +211,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
             if ($select_wishlist->rowCount() > 0) {
                 while ($fetch_wishlist = $select_wishlist->fetch(PDO::FETCH_ASSOC)) {
                     $select_products = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status= ?");
-                    $select_products->execute([$fetch_wishlist["product_id"],"active"]);
+                    $select_products->execute([$fetch_wishlist["product_id"],"Active"]);
                     if ($select_products->rowCount() > 0) {
                         $fetch_products = $select_products->fetch(PDO::FETCH_ASSOC);
             ?>
@@ -219,7 +219,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                             <form action="" method="post" class="box">
                                 <input type="hidden" name="wishlist_id" value="<?= $fetch_wishlist['id'] ?>">
                                 <div class="wishlistimg">
-                                    <img src="../seller/<?= $fetch_products['image'] ?>" alt="Product Image" class="img">
+                                    <img src="../seller/img/<?= $fetch_products['image'] ?>" alt="Product Image" class="img">
                                 </div>
                                 <div class="wishlist-buttons">
                                     <button type="submit" name="add_to_cart" class="btn"><i class="bx bx-cart"></i></button>
@@ -244,7 +244,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
             ?>
         </div>
         
-        <!-- inactive wishlist -->
+        <!-- inActive wishlist -->
         <div class="box-container" style="background:#ddd; border-color:gray:">
             <?php
             $grand_total = 0;
@@ -253,7 +253,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
             if ($select_wishlist->rowCount() > 0) {
                 while ($fetch_wishlist = $select_wishlist->fetch(PDO::FETCH_ASSOC)) {
                     $select_products = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status != ?");
-                    $select_products->execute([$fetch_wishlist["product_id"],"active"]);
+                    $select_products->execute([$fetch_wishlist["product_id"],"Active"]);
                     if ($select_products->rowCount() > 0) {
                         $fetch_products = $select_products->fetch(PDO::FETCH_ASSOC);
             ?>
@@ -261,7 +261,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                             <form action="" method="post" class="box">
                                 <input type="hidden" name="wishlist_id" value="<?= $fetch_wishlist['id'] ?>">
                                 <div class="wishlistimg">
-                                    <img src="../seller/<?= $fetch_products['image'] ?>" alt="Product Image" class="img">
+                                    <img src="../seller/img/<?= $fetch_products['image'] ?>" alt="Product Image" class="img">
                                 </div>
                                 <div class="wishlist-buttons">
                                    <div class="empty">item is not available</div>

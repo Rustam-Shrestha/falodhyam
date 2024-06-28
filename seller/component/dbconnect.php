@@ -1,6 +1,6 @@
 <?php
 
-$db_name="mysql:host=localhost;dbname=fruitsellersiteecommerce";
+$db_name="mysql:host=localhost;dbname=falodhyam_parties";
 $username="root";
 $userpasword="";
 $conn= new PDO($db_name,$username,$userpasword);

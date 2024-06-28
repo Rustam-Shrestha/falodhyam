@@ -76,7 +76,7 @@ $delete_product->execute([$product]);
           <?php
 
 $select_product=$conn2->prepare("SELECT * FROM `products` WHERE `status`=? ");
-$select_product->execute(["deactive"]);
+$select_product->execute(["active"]);
 if($select_product->rowCount()>0){
 
 while($fetch_product=$select_product->fetch(PDO::FETCH_ASSOC))
@@ -87,8 +87,8 @@ while($fetch_product=$select_product->fetch(PDO::FETCH_ASSOC))
     <div class="farmerpbox">
     <!-- <span class="seller-id">Product id is <?= $fetch_product['id'] ?> and seller-name is <?= $fetch_foreign['s-name'] ?> </span> -->
 
-        <span class="farmerpstatus" style="<?php if($fetch_product['status']=="deactive"){
-            echo"color:red "; } ?> " >  <?= $fetch_product['status']; ?>  </span>
+        <span class="farmerpstatus" style="<?php if($fetch_product['status']=="active"){
+            echo"color:green "; } ?> " >  <?= $fetch_product['status']; ?>  </span>
 
         <span class="price readprice">$<?= $fetch_product['price'] ?>/-</span>
 <input type="hidden" name="productId" value="<?= $fetch_product['id'];  ?>">  

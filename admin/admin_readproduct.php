@@ -35,7 +35,7 @@ $getid=$_GET['post_id'];
 if(isset($_POST['delete'])){
 
     $product=$_POST['productId'];
-   $delete_product= $conn->prepare("DELETE FROM `sellerproducts` WHERE `products`.`p-id` = ?");
+   $delete_product= $conn2->prepare("DELETE FROM `products` WHERE `products`.`id` = ?");
 $delete_product->execute([$product]);
 
 }
@@ -51,8 +51,8 @@ $delete_product->execute([$product]);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="../style/one.css">
-    <link rel="stylesheet" href="../style/original.css">
+    <link rel="stylesheet" href="style/one.css">
+    <link rel="stylesheet" href="style/original.css">
     <style>
         .readprice{
             margin-left:21rem !important ;
@@ -81,7 +81,7 @@ $delete_product->execute([$product]);
           
           <?php
 
-$select_product=$conn->prepare("SELECT * FROM `sellerproducts` WHERE `p-id`=? ");
+$select_product=$conn2->prepare("SELECT * FROM `products` WHERE `id`=? ");
 $select_product->execute([$getid]);
 if($select_product->rowCount()>0){
 
@@ -92,23 +92,23 @@ while($fetch_product=$select_product->fetch(PDO::FETCH_ASSOC))
 <form action="" method="post">
     <div class="farmerpbox">
 
-    <span class="seller-id">Product id is <?= $fetch_product['p-id'] ?>  </span>
+    <span class="seller-id">Product id is <?= $fetch_product['id'] ?>  </span>
 
-        <span class="farmerpstatus" style="<?php if($fetch_product['p-status']=="deactive"){
-            echo"color:red "; } ?> " >  <?= $fetch_product['p-status']; ?>  </span>
+        <span class="farmerpstatus" style="<?php if($fetch_product['status']=="deactive"){
+            echo"color:red "; } ?> " >  <?= $fetch_product['status']; ?>  </span>
 
-        <span class="price readprice">$<?= $fetch_product['p-price'] ?>/-</span>
-<input type="hidden" name="productId" value="<?= $fetch_product['p-id'];  ?>">  
+        <span class="price readprice">$<?= $fetch_product['price'] ?>/-</span>
+<input type="hidden" name="productId" value="<?= $fetch_product['id'];  ?>">  
 
 <div class="farmerpimage">
-<img class="Ornamentimage"src="../seller/img/<?= $fetch_product['p-image']; ?>" alt="">
+<img class="Ornamentimage"src="./../seller/img/<?= $fetch_product['image']; ?>" alt="">
 </div>
 <div class="farmerproductname">
-    <?= $fetch_product['p-name']?>
+    <?= $fetch_product['name']?>
 </div>
 
 <div class="farmermessage">
-    <?= $fetch_product['p-detail']?>
+    <?= $fetch_product['product_detail']?>
 </div>
 
 <div class="farmerEDRbox">

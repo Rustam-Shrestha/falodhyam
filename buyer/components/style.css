@@ -1,0 +1,217 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+/* all the styling done in variable */
+:root {
+  --green: rgb(1, 171, 171);
+  --white: #fff;
+  --black: #000;
+  --box-shadow: rgba(0, 0, 0, 0.25);
+  --font-primary: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+/* giving minimum height so that it does not messup in fixzed navbar */
+body {
+  min-height: 100vh;
+}
+
+* {
+  font-family: var(--font-primary);
+}
+
+/* navigation styling starts==========+================*/
+/* ==================================================== */
+/* navigation styling starts==========+================*/
+/* ==================================================== */
+
+/* navigation bar section  */
+.header {
+  background-color: var(--green);
+  width: 80%;
+  margin: 20px auto;
+  border-radius: 13px 13px 0 0;
+  height: 4em;
+  display: flex;
+  justify-content: space-evenly;
+}
+/* positioning of navbar */
+.nav-container,
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.header img {
+  width: 40px;
+  height: 40px;
+  margin: 10px 0 0 10px;
+}
+/* link stylings */
+.navbar a {
+  color: var(--white);
+  text-decoration: none;
+  margin: 0 9px;
+  line-height: 4;
+  text-transform: uppercase;
+  transform: 0.3s;
+}
+.navbar a:hover {
+  color: var(--black);
+}
+.header .icons {
+  display: none;
+}
+/* navigation styling ends==========+================*/
+/* ==================================================== */
+
+.carousel-container {
+  position: relative;
+  width: 80%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.carousel {
+  display: flex;
+  transition: 0.5s ease;
+}
+
+.carousel img {
+  width: 100vw;
+  height: 80vh;
+  transition: 0.5s ease;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  z-index: 1;
+  transition: 0.5s ease;
+  height: 49px;
+  width: 38px;
+  font-size: 40px;
+}
+
+.carousel-btn-prev {
+  left: 0;
+}
+
+.carousel-btn-next {
+  right: 0;
+}
+/* navigation styling ends==========+================*/
+/* ==================================================== */
+
+@media screen and (max-width: 720px) {
+  .navbar {
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--white);
+    width: 80vw;
+    align-items: center;
+    position: relative;
+    /* top: 200px; */
+    transform: translateY(-100%);
+    z-index: 44;
+  }
+  .navbar a {
+    color: var(--green);
+  }
+  .header img {
+    position: absolute;
+    left: 80px;
+  }
+  .header .icons {
+    display: inline-block;
+  }
+  .navbar.show {
+    transform: translate(20px,60%);
+  }
+  .footer-container {
+    flex-direction: row;
+  }
+  .footer {
+    flex-direction: row;
+  }
+}
+
+/* ============================================== */
+/* footer styling starting======================== */
+
+.more-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 80px;
+}
+.more-links ul li a:hover {
+  color: var(--green);
+}
+.more-links > * {
+  line-height: 27px;
+  margin: 0 0 0 38px;
+}
+.footer-container {
+  background-color: var(--black);
+  color: var(--white);
+  position: relative;
+  min-height: 45vh;
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-logo img {
+  position: absolute;
+  left: 50%;
+  top: 29px;
+  margin: 7px 0 8px 0;
+}
+.about ul li,
+.services ul li,
+.quick-links ul li {
+  list-style-type: none;
+}
+.about ul li a,
+.services ul li a,
+.quick-links ul li a {
+  color: var(--white);
+  text-decoration: none;
+}
+
+.social-links {
+  display: flex;
+  align-items: flex-end;
+}
+.social-links i {
+  width: 30px;
+  height: 30px;
+  line-height: 25px;
+  border-radius: 50%;
+  background-color: var(--white);
+  text-align: center;
+  color: var(--green);
+  cursor: pointer;
+  padding: 0.6rem;
+  font-size: 1.5rem;
+}
+.social-links i:hover {
+  color: var(--white);
+  background-color: var(--green);
+}
+.last-footer {
+  text-align: center;
+  margin: 10px 0 19px 0;
+}
+/* ============================================== */
+/* footer styling ending======================== */

@@ -140,9 +140,38 @@ margin-top: 10px;
         border-radius: 12px;
         cursor: pointer;
         padding: 8px;
+
+    }
+
+
+#type{
+    margin: 20px auto;
+
+    /* box-shadow: 0 5px 10px 0.1px rgba(0, 0, 0, 0.1); */
+    border: none;
+    width: 100%;
+    border-radius: 12px;
+    cursor: pointer;
+    padding: 8px;
+
+}
+
+
+
+select{
+        display: block;
+        margin: 20px auto;
+    
+        box-shadow: 0 5px 10px 0.1px rgba(0, 0, 0, 0.1);
+        border: none;
+        width: 25%;
+        border-radius: 12px;
+        cursor: pointer;
+        padding: 8px;
     
     }
-.add-product-btn{
+
+    .add-product-btn{
 
 margin:19px 14px;
 font-size: 20px;

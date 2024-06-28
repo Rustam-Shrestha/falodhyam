@@ -25,7 +25,7 @@ if (isset($_POST['add_wishlist'])) {
 
     } else {
         $select_price = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status= ? LIMIT 1");
-        $select_price->execute([$product_id, "active"]);
+        $select_price->execute([$product_id, "Active"]);
         $fetch_price = $select_price->fetch(PDO::FETCH_ASSOC);
         $insert_wishlist = $con->prepare("INSERT INTO `wishlist` (id, user_id, product_id, price) VALUES(?,?,?,?)");
         $insert_wishlist->execute([$id, $user_id, $product_id, $fetch_price['price']]);
@@ -53,7 +53,7 @@ if (isset($_POST['add_to_cart'])) {
 
     } else {
         $select_price = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status= ? LIMIT 1");
-        $select_price->execute([$product_id, "active"]);
+        $select_price->execute([$product_id, "Active"]);
         $fetch_price = $select_price->fetch(PDO::FETCH_ASSOC);
         $insert_cart = $con->prepare("INSERT INTO `cart` (id, user_id, product_id, price, qty) VALUES(?,?,?,?,?)");
         $insert_cart->execute([$id, $user_id, $product_id, $fetch_price['price'], $qty]);
@@ -150,14 +150,14 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
             if (isset($_GET['pid'])) {
                 $pid = $_GET['pid'];
                 $select_product = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status= ?");
-                $select_product->execute([$pid, "active"]);
+                $select_product->execute([$pid, "Active"]);
                 if ($select_product->rowCount() > 0) {
                     while ($fetch_products = $select_product->fetch(PDO::FETCH_ASSOC)) {
 
                         ?>
                         <form method="post" class="product_form">
                             <div class="image-container">
-                                <img class="product-image" src="../seller/<?php echo $fetch_products['image'] ?>"
+                                <img class="product-image" src="../seller/img/<?php echo $fetch_products['image'] ?>"
                                     alt="product picture">
                             </div>
                             <div class="detail">

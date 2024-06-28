@@ -74,28 +74,28 @@ if (isset($_POST['logout'])) {
 
         <a href="http://localhost:8000/wip/falodhyam/buyer/view_products.php?type=berries">
             <div class="trending-item">
-                <img src="../seller/sellerimage/banana.jpg" alt="top item">
-                <h1>Banana from Malda</h1>
+                <img src="../seller/img/apple.jpg" alt="top item">
+                <h1>Apple from Bhaktapur</h1>
             </div>
         </a>
         <!-- Repeat the above structure for other .trending-item divs -->
         <a href="http://localhost:8000/wip/falodhyam/buyer/view_products.php?type=melons">
             <div class="trending-item">
-                <img src="../seller/sellerimage/dragonfruit.jpg" alt="top item">
+                <img src="../seller/img/dragonfruit.jpg" alt="top item">
                 <h1>Dragonfruit from Lamjung</h1>
             </div>
         </a>
         <!-- Repeat the above structure for other .trending-item divs -->
         <a href="http://localhost:8000/wip/falodhyam/buyer/view_products.php?type=tropical%20fruits">
             <div class="trending-item">
-                <img src="../seller/sellerimage/highq.png" alt="top item">
+                <img src="../seller/img/highq.png" alt="top item">
                 <h1>Mango from Malda</h1>
             </div>
         </a>
         <!-- Repeat the above structure for other .trending-item divs -->
         <a href="http://localhost:8000/wip/falodhyam/buyer/view_products.php?type=others">
             <div class="trending-item">
-                <img src="../seller/sellerimage/sugarcane.webp" alt="top item">
+                <img src="../seller/img/sugarcane.webp" alt="top item">
                 <h1>Local Sugarcane</h1>
             </div>
         </a>
@@ -103,7 +103,7 @@ if (isset($_POST['logout'])) {
     </section>
     <section class="sponsored">
         <div class="banner-img">
-            <img src="./assets/imgs/img1.jpg" alt="banner image">
+            <img src="../seller/img/img1.jpg" alt="banner image">
         </div>
         <div class="banner-desc">
             <h1>Bumper offer</h1>

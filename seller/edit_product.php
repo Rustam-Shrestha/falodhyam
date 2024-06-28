@@ -5,7 +5,7 @@ include 'component/dbconnect.php';
 <?php
 
 $getpid=$_GET['id'];
-$editproduct =$conn->prepare("SELECT * FROM `sellerproducts` WHERE `p-id`=?");
+$editproduct =$conn->prepare("SELECT * FROM `products` WHERE `id`=?");
 $editproduct->execute([$getpid]);
 
 // if($editproduct->rowCount()>0){
@@ -16,8 +16,8 @@ $fetch_product=$editproduct->fetch(PDO::FETCH_ASSOC);
 
 if(isset($_POST['delete'])){
 
-    $product=$_POST['productId'];
-   $delete_product= $conn->prepare("DELETE FROM `sellerproducts` WHERE `sellerproducts`.`p-id` = ?");
+   $product=$_POST['productId'];
+   $delete_product= $conn->prepare("DELETE FROM `products` WHERE `products`.`id` = ?");
 $delete_product->execute([$product]);
 
 }
@@ -34,12 +34,12 @@ $detail=$_POST['detail'];
 
 $image = $_FILES['image']['name'];
 $image_tmp_name = $_FILES['image']['tmp_name'];
-$image_folder = "../img/".$image;
+$image_folder = "img/".$image;
 move_uploaded_file($image_tmp_name, $image_folder);
      
 
 // $updateproduct=$conn->prepare("UPDATE `products` SET `p-name`=? `p-price` = ? `p-image`=? `p-detail` = ? `p-status`=  ? WHERE `products`.`p-id` = ?;");
-$updateproduct = $conn->prepare("UPDATE `sellerproducts` SET `p-name`=?, `p-price`=?, `p-image`=?, `p-detail`=? WHERE `sellerproducts`.`p-id` = ?");
+$updateproduct = $conn->prepare("UPDATE `products` SET `name`=?, `price`=?, `image`=?, `product_detail`=? WHERE `products`.`id` = ?");
 
 $updateproduct->execute([$name,$price,$image,$detail,$getpid]);
 
@@ -59,7 +59,7 @@ echo"<script> alert('Product Updated Successfully')</script>";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Product Page</title>
 <!-- <link rel="stylesheet" href="../style/two.css"> -->
-<link rel="stylesheet" href="../style/original.css">
+<link rel="stylesheet" href="style/original.css">
 <style>
     
     /*================================================ EDIT PRODUCT CSSS START================================================ */
@@ -104,7 +104,7 @@ echo"<script> alert('Product Updated Successfully')</script>";
         <div class="input-field">
         <label for="">Product satus <sup>*</sup></label>
  <select name="status" id="ProductStatusUpdate" disabled>
- <option value="<?= $fetch_product['p-status']; ?>"><?= $fetch_product['p-status']; ?></option>
+ <option value="<?= $fetch_product['status']; ?>"><?= $fetch_product['status']; ?></option>
  <!-- <option value="Active">active</option> -->
 <option value="Deactive">deactive</option>
 
@@ -115,26 +115,26 @@ echo"<script> alert('Product Updated Successfully')</script>";
         <div class="input-field">
         <label for="">Product Name</label>
       
-            <input type="text" name="name" maxlength="20" placeholder="add products name" value="<?= $fetch_product['p-name'] ?>" required>
+            <input type="text" name="name" maxlength="20" placeholder="add products name" value="<?= $fetch_product['name'] ?>" required>
         </div>
 
 
         <div class="input-field">
             <label for="">Product Price</label>
-            <input type="text" value="<?= $fetch_product['p-price'] ?>" name="price" maxlength="26" placeholder="add products price" required>
+            <input type="text" value="<?= $fetch_product['price'] ?>" name="price" maxlength="26" placeholder="add products price" required>
         </div>
 
         <div class="input-field">
             <label for="">product detail</label>
-        <textarea name="detail" value=""id="" cols="30" rows="10" placeholder="write product description" required><?= $fetch_product['p-detail'] ?></textarea>
+        <textarea name="detail" value=""id="" cols="30" rows="10" placeholder="write product description" required><?= $fetch_product['product_detail'] ?></textarea>
         </div>
 
         <div class="input-field">
             <label for="">product image <sup>*</sup></label>
-            <input type="file" name="image" accept="image/*" value="<?= $fetch_product['p-image'] ?>" required>
+            <input type="file" name="image" accept="image/*" value="<?= $fetch_product['image'] ?>" required>
         </div>
 <div class="input-field">
-<img class="Ornamentimage" src="img/<?= $fetch_product['p-image'] ?> " alt="">
+<img class="Ornamentimage" src="img/<?= $fetch_product['image'] ?> " alt="">
 </div>
 
 
