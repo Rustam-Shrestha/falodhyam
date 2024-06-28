@@ -197,6 +197,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                         $fetch_products = $select_products->fetch(PDO::FETCH_ASSOC);
                         $has_Active_products = true;
                         ?>
+
                         <form action="" method="POST" class="item">
                             <!-- secretly giving cart id to server -->
                             <input type="hidden" name="cart_id" value="<?= $fetch_carts['id']; ?>">
@@ -212,11 +213,22 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                                 <p class="subtotal"><strong>Sub total:</strong> <span>Rs.
                                         <?= $sub_total = ($fetch_carts['qty'] * $fetch_carts['price']) ?></span> </p>
                             </div>
-                            <div class="flex">
-                                <input class="btn" type="number" name="qty" required min="1" value=<?= $fetch_carts['qty'] ?>
-                                    max="<?= $fetch_products['available_stock']?>" maxlength="2" class="qty">
-                                <button type="submit" name="update_cart" class="bx bxs-edit fa-edit btn"></button>
-                            </div>
+                            <?php if ($fetch_products['available_stock'] > 0) { ?>
+                                <div class="flex">
+                                    <?php 
+                                    if ($fetch_products['available_stock'] < $fetch_carts['qty']) {
+                                        $newqty = $fetch_products['available_stock'];
+                                        $updateCart = $con->prepare("UPDATE cart SET qty = ?");
+                                        $updateCart->execute([$newqty]);
+                                    } 
+                                    ?>
+                                    <input class="btn" type="number" name="qty" required min="1" value=<?= $fetch_carts['qty'] ?>
+                                        max="<?= $fetch_products['available_stock'] ?>" maxlength="2" class="qty">
+                                    <button type="submit" name="update_cart" class="bx bxs-edit fa-edit btn"></button>
+                                </div>
+                            <?php } else {
+                                echo "<div class='empty'>product is not available</div>";
+                            } ?>
                             <button type="submit" name="delete_item" class="btn"
                                 onclick="return confirm('are u sure to delete this item');">delete</button>
                         </form>

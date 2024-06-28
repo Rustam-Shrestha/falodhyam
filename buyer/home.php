@@ -103,7 +103,7 @@ if (isset($_POST['logout'])) {
     </section>
     <section class="sponsored">
         <div class="banner-img">
-            <img src="../seller/img/img1.jpg" alt="banner image">
+            <img src="../seller/img/forest.jpg" alt="banner image">
         </div>
         <div class="banner-desc">
             <h1>Bumper offer</h1>

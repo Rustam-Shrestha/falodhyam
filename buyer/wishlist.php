@@ -222,15 +222,22 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                                     <img src="../seller/img/<?= $fetch_products['image'] ?>" alt="Product Image" class="img">
                                 </div>
                                 <div class="wishlist-buttons">
-                                    <button type="submit" name="add_to_cart" class="btn"><i class="bx bx-cart"></i></button>
+                                    <?php if($fetch_products['available_stock']>0){?>
                                     <a href="view_page.php?pid=<?= $fetch_products['id']; ?>" class="bx bxs-show btn"></a>
                                     <button type="submit" name="delete_item" class="btn" onclick="return confirm('Delete this item?')"><i class="bx bx-x"></i></button>
+                                    <?php
+                                    }else{?>
+                                     <button type="submit" name="delete_item" class="btn" onclick="return confirm('Delete this item?')"><i class="bx bx-x"></i></button>
+                                     <br>
+                                     <div class="empty">product out of stock</div>
+                                        <?php
+                                    }?>
                                 </div>
                                 <h3 class="name"><?= $fetch_products['name']; ?></h3>
                                 <input type="hidden" name="product_id" value="<?= $fetch_products['id'] ?>">
                                 <div class="flex">
                                     <p class="price">Price: Rs. <?= $fetch_products['price'] ?>/-</p>
-                                    <a href="checkout.php?get_id=<?= $fetch_products['id']; ?>" class="btn" style="font-size:13px;">Buy Now</a>
+                                   
                                 </div>
                             </form>
                         </div>
