@@ -87,8 +87,8 @@ function getActiveClass($current_type, $type)
 //     exit();
 // }
 
-if(isset($_GET['overflow'])&&$_GET['overflow']==1){
-    $warning_msg[] ="Not enough quantity in stock";
+if (isset($_GET['overflow']) && $_GET['overflow'] == 1) {
+    $warning_msg[] = "Not enough quantity in stock";
 }
 ?>
 <!DOCTYPE html>
@@ -142,6 +142,10 @@ if(isset($_GET['overflow'])&&$_GET['overflow']==1){
             margin-bottom: 16px;
             margin-right: 0;
             box-shadow: 2px 4px 11px rgba(0, 0, 0, 0.250)
+        }
+
+        .products {
+            display: flex;
         }
     </style>
     <title>products page</title>
@@ -208,17 +212,26 @@ if(isset($_GET['overflow'])&&$_GET['overflow']==1){
                         }
                         echo $product_name;
                         ?> </h3>
+
                         <strong class="typeof"><?= $fetch_products['type'] ?></strong>
                         <input type="hidden" name="product_id" value="<?= $fetch_products['id']; ?>">
-                        <div class="flex">
-                            <p class="price">price: Rs. <?= $fetch_products['price']; ?>/-
-                                <input class="btn quantity" type="number" name="qty" required value="1" min="1" max="<?= $fetch_products['available_stock']?>"
-                                    maxlength="2" data-product-id="<?= $fetch_products['id']; ?>">
-                            </p>
-                        </div>
-                        <br><br>
-                        <a href="#" class="btn checkout" data-product-id="<?= $fetch_products['id']; ?>">buy now</a>
-                    </form>
+                        <?php
+                        if ($fetch_products['available_stock'] > 0) {
+                            ?>
+                            <div class="flex">
+                                <p class="price">price: Rs. <?= $fetch_products['price']; ?>/-
+                                    <input class="btn quantity" type="number" name="qty" required value="1" min="1"
+                                        max="<?= $fetch_products['available_stock'] ?>" maxlength="2"
+                                        data-product-id="<?= $fetch_products['id']; ?>">
+                                </p>
+                            </div>
+                            <br><br>
+                            <a href="#" class="btn checkout" data-product-id="<?= $fetch_products['id']; ?>">buy now</a>
+                    <?php } else {
+                            echo "<div class='empty'>Product is out of stock</div>";
+                        }
+                        ?>
+                        </form>
                     <?php
                 }
             } else {
