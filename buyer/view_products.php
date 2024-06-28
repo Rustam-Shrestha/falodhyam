@@ -197,12 +197,14 @@ if (isset($_GET['overflow']) && $_GET['overflow'] == 1) {
                         if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                             echo "<div style='background-color:rgba(19, 78, 0, 0.956); color:white'>login for more features </div>";
                         } else {
-                            echo '<div class="buttons">
+                            if ($fetch_products['available_stock'] > 0) {
+                                echo '<div class="buttons">
                     <button type="submit" name="add_to_cart"><i class="bx bx-cart"></i></button>
                     <button type="submit" name="add_to_wishlist" value="' . $fetch_products["id"] . '"><i class="bx bx-heart"></i></button>
 
                     <a href="view_page.php?pid=' . $fetch_products["id"] . '" class="bx bxs-show"></a>
                     </div>';
+                            }
                         }
                         ?>
                         <h3 class="name"> <?php
@@ -227,11 +229,11 @@ if (isset($_GET['overflow']) && $_GET['overflow'] == 1) {
                             </div>
                             <br><br>
                             <a href="#" class="btn checkout" data-product-id="<?= $fetch_products['id']; ?>">buy now</a>
-                    <?php } else {
+                        <?php } else {
                             echo "<div class='empty'>Product is out of stock</div>";
                         }
                         ?>
-                        </form>
+                    </form>
                     <?php
                 }
             } else {
