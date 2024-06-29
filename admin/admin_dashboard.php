@@ -16,8 +16,6 @@ if (!isset($adminid)) {
 $admin = $conn->prepare("SELECT * FROM `admin` WHERE `id`=? ");
 $admin->execute([$adminid]);
 if ($admin->rowCount() > 0) {
-
-    echo "The admin id is" . $adminid;
     echo "<a href='admin_logout.php'>LOGOUT</a>";
 
 }

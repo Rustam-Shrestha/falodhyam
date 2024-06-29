@@ -113,7 +113,7 @@ $view_sellerid = isset($_SESSION['id']) ? $_SESSION['id'] : null;
                                     </div>
 
                                     <div class="farmerEDRbox">
-                                        <?php echo "<script>alert(" . $fetch_product["id"] . ")</script>"; ?>
+                                       
                                         <a class="btn"
                                             href="admin_editproduct.php?id=<?= $fetch_product['id']; ?>?sid=<?= $fetch_foreign['s-id'] ?> ">Edit</a>
                                         <!-- <button type="submit" name="delete" class="btn" onclick="let a=prompt('Do you really want to delete your products ?');
