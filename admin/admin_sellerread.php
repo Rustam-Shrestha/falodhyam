@@ -50,24 +50,24 @@ if (isset($_POST['delete'])) {
 
     .admin-container {
         border: solid 2px red;
-        
+
     }
-    
+
     .admin-seller {
         display: flex;
         flex-wrap: wrap;
         margin: 20px;
         border: solid 2px black;
-        
+
     }
-    
+
     .as-box {
         display: block;
         width: 100%;
         border: solid 2px red;
         margin: 10px;
     }
-    
+
     .id,
     .sname {
         display: block;
@@ -84,22 +84,23 @@ if (isset($_POST['delete'])) {
         color: var(--selenagreen);
         margin-bottom: 23px;
     }
-    
+
     #sellerimg {
         height: 400px;
         width: 80%;
         margin: 0 auto;
         object-fit: contain;
     }
-    
+
     .farmerpimage {
         display: block;
         margin-left: 27px;
     }
-    #AllProduct-container{
-        height:;
-        padding:14px;
-        
+
+    #AllProduct-container {
+        height: ;
+        padding: 14px;
+
     }
 </style>
 

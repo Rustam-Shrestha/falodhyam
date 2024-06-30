@@ -205,7 +205,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                                 <img src="../seller/img/<?= $fetch_products['image']; ?>" alt="lost img" class="img">
                             </div>
                             <div class="desc">
-                                <h1><?= $fetch_products['name']; ?></h1>
+                                <h1><?php
+                        $product_name = $fetch_products['name'];
+                        if (strlen($product_name) > 20) {
+                            $product_name = htmlspecialchars(substr($product_name, 0, 20)) . '... ' . '<a style="color:#888 !important;" href="view_page.php?pid=' . $fetch_products["id"] . '">More</a>';
+                        }
+                        echo $product_name;
+                        ?></h1>
                                 <p><strong>Price:</strong> Rs. <?= $fetch_products['price'] ?>/- </p>
                                 <p><strong>Calculation: </strong> Rs. <?= $fetch_products['price'] ?> &times;
                                     <?= $fetch_carts['qty'] ?> = <?= $fetch_products['price'] * $fetch_carts['qty'] ?>

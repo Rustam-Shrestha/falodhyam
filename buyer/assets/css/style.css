@@ -46,7 +46,7 @@
 .header img {
   width: 40px;
   height: 40px;
-  margin: 10px 0 0 10px;
+  margin: 19px 0 0 10px;
 }
 /* link stylings */
 .navbar a {
@@ -118,7 +118,7 @@
 /* navigation styling ends==========+================*/
 /* ==================================================== */
 
-@media screen and (max-width: 820px) {
+@media screen and (max-width: 1060px) {
   .carousel img {
     width: 100%;
     height: auto;
@@ -143,6 +143,7 @@
     left: 40px;
     width: 25px;
     height: 25px;
+    margin:11px 0 0 14px;
   }
   .header{
     width:100%;
@@ -150,6 +151,7 @@
     position: sticky;
     top: 0;
     z-index: 1;
+    font-size: 11px;
     
   }
   .header .icons {

@@ -122,7 +122,6 @@ if (isset($_GET['overflow']) && $_GET['overflow'] == 1) {
         }
 
         .box {
-            border: 1px solid #ccc;
             padding: 10px;
             margin: 10px;
             display: inline-block;
@@ -192,7 +191,7 @@ if (isset($_GET['overflow']) && $_GET['overflow'] == 1) {
                 while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
                     ?>
                     <form action="" method="post" class="box">
-                        <img src="../seller/img/<?= $fetch_products['image']; ?>" class='img' />
+                        <img src="../seller/img/<?= $fetch_products['image']; ?>" style="border-radius:50%" class='img' />
                         <?php
                         if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                             echo "<div style='background-color:rgba(19, 78, 0, 0.956); color:white'>login for more features </div>";

@@ -1,6 +1,6 @@
 <header class="header">
     <a href="home.php">
-        <img style="width:40px; height:40px" src="././assets/imgs/logo.jpg" alt="linker" class="logo">
+        <img  src="././assets/imgs/logo.jpg" alt="linker" class="logo">
     </a>
     <div class="nav-container">
         <nav class="navbar">
