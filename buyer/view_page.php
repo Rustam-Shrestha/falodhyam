@@ -86,7 +86,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
 
         .view_page {
             margin: 0 auto;
-            padding:17px;
+            padding: 17px;
             box-shadow: 2px 4px 11px rgba(19, 78, 0, 0.956);
 
         }
@@ -121,6 +121,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
             width: auto;
             height: auto;
         }
+
         .typeof {
             border: 3px solid rgba(19, 78, 0, 0.956);
             border-right: 0px;
@@ -135,7 +136,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
             margin-bottom: 16px;
             margin-right: 0;
             box-shadow: 2px 4px 11px rgba(0, 0, 0, 0.250);
-            width:200px
+            width: 200px
         }
     </style>
 </head>
@@ -165,6 +166,14 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                                     <h1><?php echo $fetch_products['name'] ?>
                                     </h1>
                                 </div>
+                                <strong>From: </strong>
+                                <?php
+                                $fetch_name = $con->prepare("SELECT * FROM `seller` WHERE `s-id` = ?");
+                                $fetch_name->execute([$fetch_products["s-id"]]);
+                                $fetch_result = $fetch_name->fetch(PDO::FETCH_ASSOC); // Fetch the result
+                                echo $fetch_result['s-name']; // Display the seller's name
+                    
+                                ?>
                                 <strong class="typeof"><?= $fetch_products['type'] ?></strong>
                                 <div class="price">
                                     Rs.
@@ -174,11 +183,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                                     <strong>Description:</strong> <br />
                                     <p><?php echo $fetch_products['product_detail'] ?></p>
                                 </div>
-                                <br><hr><br>
+                                <br>
+                                <hr><br>
                             </div>
                             <input type="hidden" name="product_id" value="<?php echo $fetch_products['id']; ?>">
-                            <input class="btn quantity" type="number" name="qty" required value="1" min="1" max="99"
-                                    maxlength="2" data-product-id="<?= $fetch_products['id']; ?>">
+                            <input class="btn quantity" type="number" name="qty" required value="1" min="1" max="99" maxlength="2"
+                                data-product-id="<?= $fetch_products['id']; ?>">
                             <button class="btn" type="submit" name="add_wishlist">add to wishlist<i
                                     class="bx bx-heart"></i></button>
                             <input type="hidden" name="qty" value="1" min="0" class="quantity">
@@ -198,7 +208,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
 
     <script>
-document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('.checkout').forEach(button => {
                 button.addEventListener('click', function (event) {
                     event.preventDefault();

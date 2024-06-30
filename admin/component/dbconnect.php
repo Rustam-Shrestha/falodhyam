@@ -10,8 +10,12 @@ $conn2= new PDO($db_name2,$username2,$userpasword2);
 
 
 
-if(!$conn2){
-    echo'database two not connected successfully.';
+if($conn2){
+    echo'database two connecetd successfully';
+
+}else{
+
+    echo'database not connected successfully.';
 
 }
 
@@ -26,7 +30,11 @@ $conn= new PDO($db_name,$username,$userpasword);
 
 
 
-if(!$conn){
+if($conn){
+    echo'database connecetd successfully';
+
+}else{
+
     echo'database not connected successfully.';
 
 }

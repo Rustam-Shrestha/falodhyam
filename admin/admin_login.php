@@ -1,3 +1,14 @@
+<?php
+
+
+include 'component/dbconnect.php';
+
+session_start();
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -203,9 +214,6 @@ width:22%;
 </body>
 </html>
 <?php
-include 'component/dbconnect.php';
-
-session_start();
 
 if(isset($_POST['login'])){
 $email=$_POST['email'];

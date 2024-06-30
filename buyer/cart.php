@@ -98,19 +98,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
             align-items: center
         }
 
-        .item {
-            padding: 14px;
-            margin: 17pX 23px;
-            border: 2PX inset var(--green);
-            border-radius: 14px;
-            ;
-        }
 
         .carts .item .cartimg img {
             max-width: 240px;
             height: auto;
             overflow-y: none;
-
+            margin: 11px
         }
 
         .accumulation {
@@ -147,20 +140,28 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
+            width: 80%
         }
 
         .item {
-            border: 2px outset var(--green);
             border-radius: 10px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 8px;
-            margin: 14px 17px;
-            max-width: 700px;
-            min-width: 250px;
+            max-width: 300px !important;
+            min-width: 250px !important;
             display: flex;
+            padding: 14px;
+            margin: 17pX 23px;
+            border: 3px solid var(--green);
+            border-radius: 14px;
+
+        }
+
+        .flex button,
+        .flex input {
+            margin: 13px;
         }
     </style>
     <title>cart page</title>
@@ -198,7 +199,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                         $has_Active_products = true;
                         ?>
 
-                        <form action="" method="POST" class="item">
+                        <form action="" method="POST" class="item" style="height:540px">
                             <!-- secretly giving cart id to server -->
                             <input type="hidden" name="cart_id" value="<?= $fetch_carts['id']; ?>">
                             <div class="cartimg">
@@ -206,12 +207,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                             </div>
                             <div class="desc">
                                 <h1><?php
-                        $product_name = $fetch_products['name'];
-                        if (strlen($product_name) > 20) {
-                            $product_name = htmlspecialchars(substr($product_name, 0, 20)) . '... ' . '<a style="color:#888 !important;" href="view_page.php?pid=' . $fetch_products["id"] . '">More</a>';
-                        }
-                        echo $product_name;
-                        ?></h1>
+                                $product_name = $fetch_products['name'];
+                                if (strlen($product_name) > 20) {
+                                    $product_name = htmlspecialchars(substr($product_name, 0, 20)) . '... ' . '<a style="color:#888 !important;" href="view_page.php?pid=' . $fetch_products["id"] . '">More</a>';
+                                }
+                                echo $product_name;
+                                ?></h1>
                                 <p><strong>Price:</strong> Rs. <?= $fetch_products['price'] ?>/- </p>
                                 <p><strong>Calculation: </strong> Rs. <?= $fetch_products['price'] ?> &times;
                                     <?= $fetch_carts['qty'] ?> = <?= $fetch_products['price'] * $fetch_carts['qty'] ?>
@@ -221,20 +222,22 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
                             </div>
                             <?php if ($fetch_products['available_stock'] > 0) { ?>
                                 <div class="flex">
-                                    <?php 
+                                    <?php
                                     if ($fetch_products['available_stock'] < $fetch_carts['qty']) {
                                         $newqty = $fetch_products['available_stock'];
                                         $updateCart = $con->prepare("UPDATE cart SET qty = ?");
                                         $updateCart->execute([$newqty]);
-                                    } 
+                                    }
                                     ?>
                                     <input class="btn" type="number" name="qty" required min="1" value=<?= $fetch_carts['qty'] ?>
                                         max="<?= $fetch_products['available_stock'] ?>" maxlength="2" class="qty">
-                                    <button type="submit" name="update_cart" class="bx bxs-edit fa-edit btn"></button>
+                                        <button type="submit" name="update_cart" class="bx bxs-edit fa-edit btn"></button>
+                                        <a class="btn" href="view_page.php?pid=<?=$fetch_products['id']?>"><i class="bx bx-show"></i></button></a>
                                 </div>
                             <?php } else {
                                 echo "<div class='empty'>product is not available</div>";
                             } ?>
+        
                             <button type="submit" name="delete_item" class="btn"
                                 onclick="return confirm('are u sure to delete this item');">delete</button>
                         </form>

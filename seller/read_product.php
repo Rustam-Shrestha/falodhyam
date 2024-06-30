@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 include 'component/dbconnect.php';
 
 include 'navbar.php';

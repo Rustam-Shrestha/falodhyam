@@ -213,7 +213,14 @@ if (isset($_GET['overflow']) && $_GET['overflow'] == 1) {
                         }
                         echo $product_name;
                         ?> </h3>
-
+                        <strong>From: </strong>
+                        <?php
+                        $fetch_name = $con->prepare("SELECT * FROM `seller` WHERE `s-id` = ?");
+                        $fetch_name->execute([$fetch_products["s-id"]]);
+                        $fetch_result = $fetch_name->fetch(PDO::FETCH_ASSOC); // Fetch the result
+                        echo $fetch_result['s-name']; // Display the seller's name
+                
+                        ?>
                         <strong class="typeof"><?= $fetch_products['type'] ?></strong>
                         <input type="hidden" name="product_id" value="<?= $fetch_products['id']; ?>">
                         <?php

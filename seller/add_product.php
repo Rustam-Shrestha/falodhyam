@@ -1,19 +1,13 @@
 <?php
+
+session_start();
+
 include 'navbar.php';
 include 'component/dbconnect.php';
 ?>
 <?php
 
-session_start(); // Start the session
-
-$sellerid = isset($_SESSION['id']) ? $_SESSION['id'] : null;
-
-if (!$sellerid) {
-    header("Location: dashboard.php");
-    exit;
-}
-
-
+$sellerid=$_SESSION['id'];
 
 if(isset($_POST['publish'])){
     $productname = $_POST['name'];

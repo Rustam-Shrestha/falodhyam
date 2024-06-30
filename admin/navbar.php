@@ -1,5 +1,70 @@
 
+
+<!-- ======================================SELLER FETCHED============================================ -->
+
+<?php
+
+
+session_start();
+include 'component/dbconnect.php';
+
+$adminid= $_SESSION['adminid'];
+$admin=$conn->prepare("SELECT * FROM `admin` WHERE `id`=? ");
+$admin->execute([$adminid]);
+
+$fetchadmin = $admin->fetch(PDO::FETCH_ASSOC);
+
+    
+
+?>
+
+
+
+
+
 <style>
+
+/* ============================ HAMBURGER TYPE TO LOGOUT CSS ============================ */
+ 
+.modal {
+  position: fixed;
+  top: 2%;
+  right: 15%;
+  z-index: 9999;
+  background: green; /* semi-transparent background */
+  padding: 90px;
+
+  display: none;
+  border-radius:8px;
+  transition: 0.5s;
+}
+
+.modal p {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  color: tomato;
+  cursor: pointer;
+  padding: 4px;
+  border: 1px solid tomato;
+}
+/* p:hover{
+  color: var(--white);
+  background-color: tomato;
+  border:1px solid var(--white);
+
+} */
+
+.blob {
+  padding: 4px;
+  border-radius: 50%;
+  background-color: var(--brown);
+}
+/* ============================ HAMBURGER TYPE TO LOGOUT CSS ============================ */
+
+
+
 * {
     margin: 0;
     padding: 0;
@@ -199,6 +264,45 @@ backdrop-filter:blur(20px);
 </div>
 
 </header>
+
+
+<form method="post" id="ham-account">
+<div class="modal" id="modal">
+    
+<p id="terminator">&times;</p>
+    <?php
+        if (isset($_SESSION['id']) && $_SESSION['id'] != "") {
+            echo '<strong style="font-size:18px;color:white">Email:</strong> <span style="font-size:18px;color:black">'.$fetchadmin['useremail'].' </span><br><a href="logout.php">log out from '.$fetchadmin['useremail'];' </button>';
+            
+        } else {
+             
+            echo '<a href="login.php" class="btn">login</a>
+        <a href="signup.php" class="btn">signup</a>';
+        }
+        ?>
+
+</div>
+</form>
+
+<script>
+    var opener = document.getElementById("user-btn");
+    var terminator = document.getElementById("terminator");
+    var modal = document.getElementById("modal");
+    opener.addEventListener("click", () => {
+        modal.style.display = "block";
+        modal.style.transition = "1.1s";
+    })
+    terminator.addEventListener("click", () => {
+        modal.style.display = "none";
+        modal.style.transition = "1.1s";
+    })
+
+</script>
+
+
+
+
+
 
 <script>
 const header=document.querySelector('.header');

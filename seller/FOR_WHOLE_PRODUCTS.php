@@ -1,6 +1,4 @@
 <?php
-
-
 include 'component/dbconnect.php';
 
 include 'navbar.php';
@@ -31,7 +29,7 @@ include 'navbar.php';
 if(isset($_POST['delete'])){
 
     $product=$_POST['productId'];
-   $delete_product= $conn2->prepare("DELETE FROM `products` WHERE `products`.`id` = ?");
+   $delete_product= $conn->prepare("DELETE FROM `orders` WHERE `orders`.`id` = ?");
 $delete_product->execute([$product]);
 
 }
@@ -59,7 +57,7 @@ $delete_product->execute([$product]);
     
 <div class="carousel">
 <div class="fruitspage">
-<h1 id="heading">READ PRODUCTS</h1>
+<h1 id="heading">ORDERS</h1>
 </div>
 <div class="box">
 
@@ -77,8 +75,8 @@ $delete_product->execute([$product]);
           
           <?php
 
-$select_product=$conn2->prepare("SELECT * FROM `products` WHERE `status`=? ");
-$select_product->execute(["pending"]);
+$select_product=$conn->prepare("SELECT * FROM `orders`");
+$select_product->execute();
 if($select_product->rowCount()>0){
 
 while($fetch_product=$select_product->fetch(PDO::FETCH_ASSOC))
@@ -87,28 +85,45 @@ while($fetch_product=$select_product->fetch(PDO::FETCH_ASSOC))
 ?>
 <form action="" method="post">
     <div class="farmerpbox">
-    <!-- <span class="seller-id">Product id is <?= $fetch_product['id'] ?> and seller-name is <?= $fetch_foreign['s-name'] ?> </span> -->
+    <!-- <span class="seller-id">Product id is <?= $fetch_product['id'] ?> and seller-name is <?= $fetch_foreign['name'] ?> </span> -->
 
         <span class="farmerpstatus" style="<?php if($fetch_product['status']=="pending"){
             echo"color:green"; } ?> " >  <?= $fetch_product['status']; ?>  </span>
 
+<!-- ==================================== Total price needs to be inserted ================================== -->
+
+
         <span class="price readprice">$<?= $fetch_product['price'] ?>/-</span>
+        <span class="price readprice">$<?= $fetch_product['qty'] ?>/-</span>
+
+        <!-- This input stores a fetch value on  html tag........ -->
 <input type="hidden" name="productId" value="<?= $fetch_product['id'];  ?>">  
 
-<div class="farmerpimage">
-<img class="Ornamentimage"src="../seller/img/<?= $fetch_product['image']; ?>" alt="">
+<div class="farmerproductname">
+    <?= $fetch_product['user_id']?>
 </div>
+
 <div class="farmerproductname">
     <?= $fetch_product['name']?>
 </div>
+<div class="farmerproductname">
+    <?= $fetch_product['email']?>
+</div>
+
+<div class="farmerproductname">
+    <?= $fetch_product['address']?>
+</div>
+
+
+
 
 <div class="farmermessage">
-    <?= $fetch_product['product_detail']?>
+    <?= $fetch_product['house_number']?>
 </div>
 
 <div class="farmerEDRbox">
 <button type="submit" name="delete" class="btn" onclick="confirmMessage() ">Delete</button>
-<a class="viewpath btn" href="admin_dashboard.php " > Go Back</a>
+<a class="viewpath btn" href="dashboard.php " > Go Back</a>
 
 </div>
 

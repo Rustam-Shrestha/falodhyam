@@ -52,7 +52,7 @@ if (isset($_POST['place_order'])) {
         if ($get_product->rowCount() > 0) {
             $fetch_pro = $get_product->fetch(PDO::FETCH_ASSOC);
             $available_stock = $fetch_pro['available_stock'];
-            if ($available_stock >= $_GET['qty'] && $_GET['qty']>=1) {
+            if ($available_stock >= $_GET['qty'] && $_GET['qty'] >= 1) {
                 $available_stock -= $_GET['qty'];
                 $update_stock = $con->prepare("UPDATE products SET available_stock = ? WHERE id = ?");
                 $update_stock->execute([$available_stock, $fetch_pro['id']]);
@@ -125,6 +125,16 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
     exit();
 }
 
+if(isset($_GET['qty'])){
+$get_pro = $con->prepare("SELECT * FROM products WHERE id = ? AND status = ? LIMIT 1");
+$get_pro->execute([$_GET['get_id'], "Active"]);
+
+$fetch_pro = $get_pro->fetch(PDO::FETCH_ASSOC);
+if ($fetch_pro['available_stock'] < $_GET['qty']) {
+    header('Location: view_products.php?overflow=1');
+    exit; // Important: Stop execution after redirection
+}
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

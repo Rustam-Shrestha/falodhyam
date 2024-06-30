@@ -1,5 +1,8 @@
 <?php
 
+
+session_start();
+
 include 'navbar.php';
 include 'component/dbconnect.php';
 ?>
@@ -11,7 +14,6 @@ if(isset($_POST['delete'])){
 $delete_product->execute([$product]);
 
 }
-session_start();
 $view_sellerid= isset($_SESSION['id'])?$_SESSION['id'] :null;
 
 

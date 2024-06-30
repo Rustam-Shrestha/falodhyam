@@ -1,5 +1,51 @@
+<?php
+include 'component/dbconnect.php';
+?>
+
+
 
 <style>
+/* ============================ HAMBURGER TYPE TO LOGOUT CSS ============================ */
+ 
+.modal {
+  position: fixed;
+  top: 2%;
+  right: 15%;
+  z-index: 9999;
+  background: green; /* semi-transparent background */
+  padding: 90px;
+
+  display: none;
+  border-radius:8px;
+  transition: 0.5s;
+}
+
+.modal p {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  color: tomato;
+  cursor: pointer;
+  padding: 4px;
+  border: 1px solid tomato;
+}
+/* p:hover{
+  color: var(--white);
+  background-color: tomato;
+  border:1px solid var(--white);
+
+} */
+
+.blob {
+  padding: 4px;
+  border-radius: 50%;
+  background-color: var(--brown);
+}
+/* ============================ HAMBURGER TYPE TO LOGOUT CSS ============================ */
+
+
+
 * {
     margin: 0;
     padding: 0;
@@ -173,6 +219,28 @@ backdrop-filter:blur(20px);
 <body> -->
 
 
+<!-- ======================================SELLER FETCHED============================================ -->
+
+<?php
+
+$sellerid= $_SESSION['id'];
+$seller=$conn->prepare("SELECT * FROM `seller` WHERE `s-id`=? ");
+$seller->execute([$sellerid]);
+
+$fetchseller = $seller->fetch(PDO::FETCH_ASSOC);
+
+    
+
+?>
+
+
+
+
+
+
+
+
+
 <header class="header">
 <a id="firstlogo"href=""><img id="logo" src="sellerimage/ourlogo.jpg" alt="no-image" srcset="">
 <!-- <span id="companyname">FalfulKarobar</span> -->
@@ -197,6 +265,49 @@ backdrop-filter:blur(20px);
 
 </header>
 
+<form method="post" id="ham-account">
+<div class="modal" id="modal">
+    
+<p id="terminator">&times;</p>
+    <?php
+        if (isset($_SESSION['id']) && $_SESSION['id'] != "") {
+            echo '<strong style="font-size:18px;color:white">Email:</strong> <span style="font-size:18px;color:black">'.$fetchseller['s-email'].' </span><br><a href="logout.php">log out from '.$fetchseller['s-email'];' </button>';
+            
+        } else {
+             
+            echo '<a href="login.php" class="btn">login</a>
+        <a href="signup.php" class="btn">signup</a>';
+        }
+        ?>
+
+</div>
+</form>
+
+
+
+
+
+
+
+
+
+<script>
+    var opener = document.getElementById("user-btn");
+    var terminator = document.getElementById("terminator");
+    var modal = document.getElementById("modal");
+    opener.addEventListener("click", () => {
+        modal.style.display = "block";
+        modal.style.transition = "1.1s";
+    })
+    terminator.addEventListener("click", () => {
+        modal.style.display = "none";
+        modal.style.transition = "1.1s";
+    })
+
+</script>
+
+
+
 <script>
 const header=document.querySelector('.header');
 
@@ -217,7 +328,7 @@ nav.classList.toggle('active');
 nav.classList.toggle('direction');
 
 
-})
+});
 // let menu=document.querySelector('#menu-btn');
 // menu.addEventListener('click',function(){
 // let nav=document.querySelector('.navbar');
@@ -226,8 +337,4 @@ nav.classList.toggle('direction');
 
 
 </script>    
-
-
-
-
 <!-- </body> -->
