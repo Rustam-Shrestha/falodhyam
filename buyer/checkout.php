@@ -160,6 +160,8 @@ if ($fetch_pro['available_stock'] < $_GET['qty']) {
         .price,
         .grand-total {
             text-align: center;
+            font-size: 28px;
+            font-weight: bold;
         }
 
         .box-container .flex div h3,
@@ -174,16 +176,27 @@ if ($fetch_pro['available_stock'] < $_GET['qty']) {
             border-radius: 20px;
             font-size: 18px;
         }
-
+        
         .flexy {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
         }
-
+        .flexy img{
+            max-width:200px;
+            width: 40%;
+            height:auto;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+        }
         .summary {
             margin: 19px 0;
             border: 2px solid var(--green);
+        }
+        .item{
+            border: 2px 0 2px 0 solid var(--green);
+            
         }
     </style>
 </head>
@@ -234,13 +247,15 @@ if ($fetch_pro['available_stock'] < $_GET['qty']) {
                                     $grand_total += $sub_total;
                                     ?>
                                     <div class="flex flexy">
-                                        <div>
+                                        <div class="item">
                                             <img style="width:200px; height:200px;"
                                                 src="../seller/img/<?php echo $fetch_product['image'] ?>" alt="Product Image">
                                             <h3 class="name"><?= $fetch_product['name']; ?></h3>
                                             <p class="price"><?= $fetch_cart['qty']; ?> x <?= $fetch_product['price']; ?></p>
                                             <input type="hidden" name="product_id" value="<?= $fetch_product['id']; ?>">
-                                            <button class="btn" type="submit" name="delete_product">delete</button>
+                                           <center> <button class="btn" type="submit" name="delete_product">delete</button></center>
+                                           <br>
+                                           <hr>
                                         </div>
                                     </div>
                                     <?php
