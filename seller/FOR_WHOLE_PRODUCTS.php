@@ -11,11 +11,11 @@ include 'navbar.php';
 // $fetch_foreign=$select_from_foreign->fetch(PDO::FETCH_ASSOC);
 
 // if ($select_from_foreign) {
-    // $fetch_foreign = $select_from_foreign->fetch(PDO::FETCH_ASSOC);
-    // Your code to use $fetch_foreign
+// $fetch_foreign = $select_from_foreign->fetch(PDO::FETCH_ASSOC);
+// Your code to use $fetch_foreign
 // } else {
-    // Handle the case when the query fails
-    // echo "Error: Unable to fetch seller information.";
+// Handle the case when the query fails
+// echo "Error: Unable to fetch seller information.";
 // }
 
 //==================== FOREIGN KEY IMPORT CONCEPT HERE SELLER TABLE IS SELECT ====================================
@@ -26,11 +26,11 @@ include 'navbar.php';
 <!--========================================== Delete Operation ========================================== -->
 
 <?php
-if(isset($_POST['delete'])){
+if (isset($_POST['delete'])) {
 
-    $product=$_POST['productId'];
-   $delete_product= $conn->prepare("DELETE FROM `orders` WHERE `orders`.`id` = ?");
-$delete_product->execute([$product]);
+    $product = $_POST['productId'];
+    $delete_product = $conn->prepare("DELETE FROM `orders` WHERE `orders`.`id` = ?");
+    $delete_product->execute([$product]);
 
 }
 
@@ -41,6 +41,7 @@ $delete_product->execute([$product]);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,137 +49,139 @@ $delete_product->execute([$product]);
     <link rel="stylesheet" href="style/one.css">
     <link rel="stylesheet" href="style/original.css">
     <style>
-        .readprice{
-            margin-left:21rem !important ;
+        .readprice {
+            margin-left: 2rem !important;
         }
     </style>
 </head>
+
 <body>
-    
-<div class="carousel">
-<div class="fruitspage">
-<h1 id="heading">ORDERS</h1>
-</div>
-<div class="box">
 
-<a href="dashboard.php">DASHBOARD</a><span>READ PRODUCTS</span>
-</div>
+    <div class="carousel">
+        <div class="fruitspage">
+            <h1 id="heading">ORDERS</h1>
+        </div>
+        <div class="box">
 
-<!--============================ PRODUCT BOX================================ -->
+            <a href="dashboard.php">DASHBOARD</a><span>READ PRODUCTS</span>
+        </div>
 
-<div class="main">
+        <!--============================ PRODUCT BOX================================ -->
 
-<section>
-<h1 class="productheading">READ PRODUCTS</h1>
-    
-    <div id="AllProduct">        
-          
-          <?php
+        <div class="main">
 
-$select_product=$conn->prepare("SELECT * FROM `orders`");
-$select_product->execute();
-if($select_product->rowCount()>0){
+            <section>
+                <h1 class="productheading">READ PRODUCTS</h1>
 
-while($fetch_product=$select_product->fetch(PDO::FETCH_ASSOC))
-{
+                <div id="AllProduct">
 
-?>
-<form action="" method="post">
-    <div class="farmerpbox">
-    <!-- <span class="seller-id">Product id is <?= $fetch_product['id'] ?> and seller-name is <?= $fetch_foreign['name'] ?> </span> -->
+                    <?php
 
-        <span class="farmerpstatus" style="<?php if($fetch_product['status']=="pending"){
-            echo"color:green"; } ?> " >  <?= $fetch_product['status']; ?>  </span>
+                    $select_product = $conn->prepare("SELECT * FROM `orders`");
+                    $select_product->execute();
+                    if ($select_product->rowCount() > 0) {
 
-<!-- ==================================== Total price needs to be inserted ================================== -->
+                        while ($fetch_product = $select_product->fetch(PDO::FETCH_ASSOC)) {
 
+                            ?>
+                            <form action="" method="post">
+                                <div class="farmerpbox">
+                                    <!-- <span class="seller-id">Product id is <?= $fetch_product['id'] ?> and seller-name is <?= $fetch_foreign['name'] ?> </span> -->
 
-        <span class="price readprice">$<?= $fetch_product['price'] ?>/-</span>
-        <span class="price readprice">$<?= $fetch_product['qty'] ?>/-</span>
+                                    <span class="farmerpstatus" style="<?php if ($fetch_product['status'] == "pending") {
+                                        echo "color:green";
+                                    } ?> "> <?= $fetch_product['status']; ?> </span>
 
-        <!-- This input stores a fetch value on  html tag........ -->
-<input type="hidden" name="productId" value="<?= $fetch_product['id'];  ?>">  
-
-<div class="farmerproductname">
-    <?= $fetch_product['user_id']?>
-</div>
-
-<div class="farmerproductname">
-    <?= $fetch_product['name']?>
-</div>
-<div class="farmerproductname">
-    <?= $fetch_product['email']?>
-</div>
-
-<div class="farmerproductname">
-    <?= $fetch_product['address']?>
-</div>
+                                    <!-- ==================================== Total price needs to be inserted ================================== -->
 
 
+                                    <span class="price readprice">$<?= $fetch_product['price'] ?>/-</span>
+                                    <span class="price readprice">$<?= $fetch_product['qty'] ?>/-</span>
 
+                                    <!-- This input stores a fetch value on  html tag........ -->
+                                    <input type="hidden" name="productId" value="<?= $fetch_product['id']; ?>">
 
-<div class="farmermessage">
-    <?= $fetch_product['house_number']?>
-</div>
+                                    <div class="farmerproductname">
+                                        <?= $fetch_product['user_id'] ?>
+                                    </div>
 
-<div class="farmerEDRbox">
-<button type="submit" name="delete" class="btn" onclick="confirmMessage() ">Delete</button>
-<a class="viewpath btn" href="dashboard.php " > Go Back</a>
+                                    <div class="farmerproductname">
+                                        <?= $fetch_product['name'] ?>
+                                    </div>
+                                    <div class="farmerproductname">
+                                        <?= $fetch_product['email'] ?>
+                                    </div>
 
-</div>
-
-
-
-</div>
-
-
-   
-<script>
-
-function confirmMessage(){
-
-let a =prompt("Do you really want to delete your products?If 'Yes' then TYPE 'CONFIRM'. ");
-if(a!=='CONFIRM'){
-event.preventDefault();
-
-
-
-}
-}
-
-</script>
+                                    <div class="farmerproductname">
+                                        <?= $fetch_product['address'] ?>
+                                    </div>
 
 
 
 
+                                    <div class="farmermessage">
+                                        <?= $fetch_product['house_number'] ?>
+                                    </div>
 
+                                    <div class="farmerEDRbox">
+                                        <button type="submit" name="delete" class="btn"
+                                            onclick="confirmMessage() ">Delete</button>
+                                        <a class="viewpath btn" href="dashboard.php "> Go Back</a>
 
-</form>
-
-
-<?php
-
-}
-
-}else{
-    // <div class="boxxxxxxx"></div>
-}
-
-?>
+                                    </div>
 
 
 
-          </div>
-        <!-- </div> -->
-    
-</section>   
-</div>
-</div>
+                                </div>
+
+
+
+                                <script>
+
+                                    function confirmMessage() {
+
+                                        let a = prompt("Do you really want to delete your products?If 'Yes' then TYPE 'CONFIRM'. ");
+                                        if (a !== 'CONFIRM') {
+                                            event.preventDefault();
+
+
+
+                                        }
+                                    }
+
+                                </script>
 
 
 
 
-</div>
+
+
+                            </form>
+
+
+                            <?php
+
+                        }
+
+                    } else {
+                        // <div class="boxxxxxxx"></div>
+                    }
+
+                    ?>
+
+
+
+                </div>
+                <!-- </div> -->
+
+            </section>
+        </div>
+    </div>
+
+
+
+
+    </div>
 
 
 
@@ -188,5 +191,5 @@ event.preventDefault();
 
 
 </body>
-</html>
 
+</html>

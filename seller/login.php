@@ -25,7 +25,7 @@ if (isset($_POST['login'])) {
         $fetchselleremail = $checkemail->fetch(PDO::FETCH_ASSOC);
         $emailresult = $fetchselleremail['s-password'];
 
-        if (password_verify($password,$emailresult)) {
+        if (password_verify($password, $emailresult)) {
             $_SESSION['id'] = $fetchselleremail['s-id'];
 
 

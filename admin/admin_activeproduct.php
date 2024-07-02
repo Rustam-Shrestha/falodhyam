@@ -11,11 +11,11 @@ include 'navbar.php';
 // $fetch_foreign=$select_from_foreign->fetch(PDO::FETCH_ASSOC);
 
 // if ($select_from_foreign) {
-    // $fetch_foreign = $select_from_foreign->fetch(PDO::FETCH_ASSOC);
-    // Your code to use $fetch_foreign
+// $fetch_foreign = $select_from_foreign->fetch(PDO::FETCH_ASSOC);
+// Your code to use $fetch_foreign
 // } else {
-    // Handle the case when the query fails
-    // echo "Error: Unable to fetch seller information.";
+// Handle the case when the query fails
+// echo "Error: Unable to fetch seller information.";
 // }
 
 //==================== FOREIGN KEY IMPORT CONCEPT HERE SELLER TABLE IS SELECT ====================================
@@ -26,11 +26,12 @@ include 'navbar.php';
 <!--========================================== Delete Operation ========================================== -->
 
 <?php
-if(isset($_POST['delete'])){
+if (isset($_POST['delete'])) {
 
-    $product=$_POST['productId'];
-   $delete_product= $conn2->prepare("DELETE FROM `products` WHERE `products`.`id` = ?");
-$delete_product->execute([$product]);
+    $product = $_POST['productId'];
+    $delete_product = $conn2->prepare("DELETE FROM `products` WHERE `products`.`id` = ?");
+    $delete_product->execute([$product]);
+
 
 }
 
@@ -41,127 +42,159 @@ $delete_product->execute([$product]);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="style/one.css">
-    <link rel="stylesheet" href="style/original.css">
+    <link rel="stylesheet" href="style/original1.css">
     <style>
-        .readprice{
-            margin-left:21rem !important ;
+        .readprice {
+            margin-left: 2rem !important;
+        }
+
+        #mainpbox {
+            /* height:38rem; */
+
+
         }
     </style>
 </head>
+
 <body>
-    
-<div class="carousel">
-<div class="fruitspage">
-<h1 id="heading">READ PRODUCTS</h1>
-</div>
-<div class="box">
 
-<a href="dashboard.php">DASHBOARD</a><span>READ PRODUCTS</span>
-</div>
+    <div class="carousel">
+        <div class="fruitspage">
+            <h1 id="heading">READ PRODUCTS</h1>
+        </div>
+        <div class="box">
 
-<!--============================ PRODUCT BOX================================ -->
+            <a href="dashboard.php">DASHBOARD</a><span>READ PRODUCTS</span>
+        </div>
 
-<div class="main">
+        <!--============================ PRODUCT BOX================================ -->
 
-<section>
-<h1 class="productheading">READ PRODUCTS</h1>
-    
-    <div id="AllProduct">        
-          
-          <?php
+        <div class="main">
 
-$select_product=$conn2->prepare("SELECT * FROM `products` WHERE `status`=? ");
-$select_product->execute(["active"]);
-if($select_product->rowCount()>0){
+            <section>
+                <h1 class="productheading">READ PRODUCTS</h1>
 
-while($fetch_product=$select_product->fetch(PDO::FETCH_ASSOC))
-{
+                <div id="AllProduct">
 
-?>
-<form action="" method="post">
-    <div class="farmerpbox">
-    <!-- <span class="seller-id">Product id is <?= $fetch_product['id'] ?> and seller-name is <?= $fetch_foreign['s-name'] ?> </span> -->
+                    <?php
 
-        <span class="farmerpstatus" style="<?php if($fetch_product['status']=="active"){
-            echo"color:green "; } ?> " >  <?= $fetch_product['status']; ?>  </span>
+                    $select_product = $conn2->prepare("SELECT * FROM `products` WHERE `status`=? ");
+                    $select_product->execute(["active"]);
+                    if ($select_product->rowCount() > 0) {
 
-        <span class="price readprice">$<?= $fetch_product['price'] ?>/-</span>
-<input type="hidden" name="productId" value="<?= $fetch_product['id'];  ?>">  
+                        while ($fetch_product = $select_product->fetch(PDO::FETCH_ASSOC)) {
 
-<div class="farmerpimage">
-<img class="Ornamentimage"src="../seller/img/<?= $fetch_product['image']; ?>" alt="">
-</div>
-<div class="farmerproductname">
-    <?= $fetch_product['name']?>
-</div>
+                            ?>
+                            <form action="" method="post">
+                                <div class="farmerpbox" id="mainpbox">
 
-<div class="farmermessage">
-    <?= $fetch_product['product_detail']?>
-</div>
+                                    <?php
 
-<div class="farmerEDRbox">
-<button type="submit" name="delete" class="btn" onclick="confirmMessage() ">Delete</button>
-<a class="viewpath btn" href="admin_dashboard.php " > Go Back</a>
-
-</div>
+                                    //==================== FOREIGN KEY IMPORT CONCEPT HERE SELLER TABLE IS SELECT ====================================
+                                    $sellerid = $fetch_product['s-id'];
+                                    $select_from_foreign = $conn2->prepare("SELECT * FROM `seller` WHERE `s-id` = ?");
+                                    $select_from_foreign->execute([$sellerid]);
+                                    $fetch_foreign = $select_from_foreign->fetch(PDO::FETCH_ASSOC);
 
 
-
-</div>
-
-
-   
-<script>
-
-function confirmMessage(){
-
-let a =prompt("Do you really want to delete your products?If 'Yes' then TYPE 'CONFIRM'. ");
-if(a!=='CONFIRM'){
-event.preventDefault();
-
-
-
-}
-}
-
-</script>
+                                    //==================== FOREIGN KEY IMPORT CONCEPT HERE SELLER TABLE IS SELECT ====================================
+                                    ?>
 
 
 
 
+                                    <!-- <span class="seller-id">Product id is <?= $fetch_product['id'] ?> and seller-name is <?= $fetch_foreign['s-name'] ?> </span> -->
 
+                                    <span class="farmerpstatus" style="<?php if ($fetch_product['status'] == "active") {
+                                        echo "color:green ";
+                                    } ?> "> <?= $fetch_product['status']; ?> </span>
 
-</form>
+                                    <span class="price readprice">Rs <?= $fetch_product['price'] ?></span>
+                                    <input type="hidden" name="productId" value="<?= $fetch_product['id']; ?>">
 
-
-<?php
-
-}
-
-}else{
-    // <div class="boxxxxxxx"></div>
-}
-
-?>
-
-
-
-          </div>
-        <!-- </div> -->
-    
-</section>   
-</div>
-</div>
+                                    <div class="farmerseller">
+                                        <span class="farmerseller">Seller Id : <?= $fetch_product['s-id'] ?> </span>
+                                        <span class="farmerseller">Seller Name : <?= $fetch_foreign['s-name'] ?> </span>
+                                    </div>
 
 
 
+                                    <div class="farmerpimage">
+                                        <img class="Ornamentimage" src="../seller/img/<?= $fetch_product['image']; ?>" alt="">
+                                    </div>
+                                    <div class="farmerproductname">
+                                        <?= $fetch_product['name'] ?>
+                                    </div>
 
-</div>
+                                    <div class="farmermessage">
+                                        <?= $fetch_product['product_detail'] ?>
+                                    </div>
+
+                                    <div class="farmerEDRbox">
+                                        <button type="submit" name="delete" class="btn"
+                                            onclick="confirmMessage() ">Delete</button>
+                                        <a class="viewpath btn" href="admin_dashboard.php "> Go Back</a>
+
+                                    </div>
+
+
+
+                                </div>
+
+
+
+                                <script>
+
+                                    function confirmMessage() {
+
+                                        let a = prompt("Do you really want to delete your products?If 'Yes' then TYPE 'CONFIRM'. ");
+                                        if (a !== 'CONFIRM') {
+                                            event.preventDefault();
+
+
+
+                                        }
+                                    }
+
+                                </script>
+
+
+
+
+
+
+                            </form>
+
+
+                            <?php
+
+                        }
+
+                    } else {
+                        // <div class="boxxxxxxx"></div>
+                    }
+
+                    ?>
+
+
+
+                </div>
+                <!-- </div> -->
+
+            </section>
+        </div>
+    </div>
+
+
+
+
+    </div>
 
 
 
@@ -171,5 +204,5 @@ event.preventDefault();
 
 
 </body>
-</html>
 
+</html>

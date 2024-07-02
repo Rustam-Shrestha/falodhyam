@@ -7,14 +7,14 @@ include 'navbar.php';
 include 'component/dbconnect.php';
 ?>
 <?php
-if(isset($_POST['delete'])){
+if (isset($_POST['delete'])) {
 
-    $product=$_POST['productId'];
-   $delete_product= $conn->prepare("DELETE FROM `products` WHERE `products`.`id` = ?");
-$delete_product->execute([$product]);
+    $product = $_POST['productId'];
+    $delete_product = $conn->prepare("DELETE FROM `products` WHERE `products`.`id` = ?");
+    $delete_product->execute([$product]);
 
 }
-$view_sellerid= isset($_SESSION['id'])?$_SESSION['id'] :null;
+$view_sellerid = isset($_SESSION['id']) ? $_SESSION['id'] : null;
 
 
 
@@ -33,113 +33,118 @@ $view_sellerid= isset($_SESSION['id'])?$_SESSION['id'] :null;
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Product Page</title>
-<!-- <link rel="stylesheet" href="../style/two.css"> -->
-<link rel="stylesheet" href="style/original.css">
+    <!-- <link rel="stylesheet" href="../style/two.css"> -->
+    <link rel="stylesheet" href="style/original.css">
 </head>
+
 <body>
 
-<div class="carousel">
-<div class="fruitspage">
-<h1 id="heading">ALL PRODUCTS</h1>
-</div>
-<div class="box">
+    <div class="carousel">
+        <div class="fruitspage">
+            <h1 id="heading">ALL PRODUCTS</h1>
+        </div>
+        <div class="box">
 
-<a href="dashboard.php">DASHBOARD</a><span>/ ALL PRODUCTS</span>
-</div>
-<!--============================ PRODUCT BOX================================ -->
+            <a href="dashboard.php">DASHBOARD</a><span>/ ALL PRODUCTS</span>
+        </div>
+        <!--============================ PRODUCT BOX================================ -->
 
-<div class="main">
+        <div class="main">
 
-<section>
-<h1 class="productheading">ALL PRODUCTS</h1>
-    
-    <div id="AllProduct">        
-          
-          <?php
+            <section>
+                <h1 class="productheading">ALL PRODUCTS</h1>
 
-$select_product=$conn->prepare("SELECT * FROM `products` WHERE `products`.`s-id` = ?");
-$select_product->execute([$view_sellerid]);
-//==================== FOREIGN KEY IMPORT CONCEPT HERE SELLER TABLE IS SELECT ====================================
-$select_from_foreign=$conn->prepare("SELECT * FROM `seller` WHERE `s-id` = ?");
-$select_from_foreign->execute([$view_sellerid]);
-$fetch_foreign=$select_from_foreign->fetch(PDO::FETCH_ASSOC);
+                <div id="AllProduct">
 
+                    <?php
 
-//==================== FOREIGN KEY IMPORT CONCEPT HERE SELLER TABLE IS SELECT ====================================
-
-if($select_product->rowCount()>0){
-
-while($fetch_product=$select_product->fetch(PDO::FETCH_ASSOC))
-{
-
-?>
-<form action="" method="post">
-    <div class="farmerpbox">
-        <span class="farmerpstatus" style="<?php if($fetch_product['status']=="deactive" || $fetch_product['status']=="Deactive"){
-            echo"color:red "; } ?> " >  <?= $fetch_product['status']; ?>  </span>
-
-        <span class="price">Rs. <?= $fetch_product['price'] ?>/-</span>
-        <span class="seller-id">Person id is <?= $fetch_product['s-id'] ?> and seller-name is <?= $fetch_foreign['s-name'] ?> </span>
-<input type="hidden" name="productId" value="<?= $fetch_product['id'];  ?>">  
-
-<div class="farmerpimage">
-<img class="Ornamentimage"src="img/<?= $fetch_product['image']; ?>" alt="">
-</div>
-<div class="farmerproductname">
-    <?= $fetch_product['name']?>
-</div>
-
-<div class="farmerEDRbox">
-<a class="btn" href="edit_product.php?id=<?= $fetch_product['id']; ?>">Edit</a>
-<button type="submit" name="delete" class="btn" onclick="return confirm('Do you really want to delete your products ?')">Delete</button>
-<a class="viewpath btn" href="read_product.php?post_id=<?= $fetch_product['id'];  ?>" >View</a>
-
-</div>
+                    $select_product = $conn->prepare("SELECT * FROM `products` WHERE `products`.`s-id` = ?");
+                    $select_product->execute([$view_sellerid]);
+                    //==================== FOREIGN KEY IMPORT CONCEPT HERE SELLER TABLE IS SELECT ====================================
+                    $select_from_foreign = $conn->prepare("SELECT * FROM `seller` WHERE `s-id` = ?");
+                    $select_from_foreign->execute([$view_sellerid]);
+                    $fetch_foreign = $select_from_foreign->fetch(PDO::FETCH_ASSOC);
 
 
+                    //==================== FOREIGN KEY IMPORT CONCEPT HERE SELLER TABLE IS SELECT ====================================
+                    
+                    if ($select_product->rowCount() > 0) {
 
-</div>
+                        while ($fetch_product = $select_product->fetch(PDO::FETCH_ASSOC)) {
+
+                            ?>
+                            <form action="" method="post">
+                                <div class="farmerpbox">
+                                    <span class="farmerpstatus" style="<?php if ($fetch_product['status'] == "deactive" || $fetch_product['status'] == "Deactive") {
+                                        echo "color:red ";
+                                    } ?> "> <?= $fetch_product['status']; ?> </span>
+
+                                    <span class="price">Rs <?= $fetch_product['price'] ?></span>
+
+                                    <input type="hidden" name="productId" value="<?= $fetch_product['id']; ?>">
+
+                                    <div class="farmerpimage">
+                                        <img class="Ornamentimage" src="img/<?= $fetch_product['image']; ?>" alt="">
+                                    </div>
+                                    <div class="farmerproductname">
+                                        <?= $fetch_product['name'] ?>
+                                    </div>
+
+                                    <div class="farmerEDRbox">
+                                        <a class="btn" href="edit_product.php?id=<?= $fetch_product['id']; ?>">Edit</a>
+                                        <button type="submit" name="delete" class="btn"
+                                            onclick="return confirm('Do you really want to delete your products ?')">Delete</button>
+                                        <a class="viewpath btn"
+                                            href="read_product.php?post_id=<?= $fetch_product['id']; ?>">View</a>
+
+                                    </div>
 
 
 
-
+                                </div>
 
 
 
 
-</form>
 
 
-<?php
-//================================================ PHP INDSDE XA HTML ELEMNET ================================================
-}
 
-}else{
-    echo' <div class="NoProductBox">
+
+                            </form>
+
+
+                            <?php
+                            //================================================ PHP INDSDE XA HTML ELEMNET ================================================
+                        }
+
+                    } else {
+                        echo ' <div class="NoProductBox">
     <h1 id="Productheading">NO Product Added Yet !</h1>
     <a class="addpath btn" href="add_product.php" >Add Product</a>
     </div>';
-   
-}
 
-//================================================ PHP INDSDE XA HTML ELEMNET ================================================
+                    }
+
+                    //================================================ PHP INDSDE XA HTML ELEMNET ================================================
+                    
+
+                    ?>
 
 
-?>
 
+                </div>
+                <!-- </div> -->
 
+            </section>
+        </div>
 
-          </div>
-        <!-- </div> -->
-    
-</section>   
-</div>
-
-</div>
+    </div>
 
 </body>
+
 </html>
