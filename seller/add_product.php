@@ -84,6 +84,55 @@ if (isset($_POST['publish']) || isset($_POST['draft'])) {
             }
         }
     </script>
+    <style>
+        .modalrus {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-sizing: border-box;
+            width: 100vw;
+            height: 100vh;
+            display: none;
+
+        }
+
+
+        .modalrus table {
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid white;
+        }
+
+        th {
+            background-color: rgba(19, 78, 0, 0.6);
+        }
+
+        td {
+            background-color: rgba(19, 78, 0, 0.3);
+        }
+    </style>
 </head>
 
 <body>
@@ -91,16 +140,67 @@ if (isset($_POST['publish']) || isset($_POST['draft'])) {
     <div class="carousel">
         <div class="fruitspage">
             <h1 id="heading">ADD PRODUCTS</h1>
+            <div id="myModal" class="modalrus">
+                <span class="close-btn btn"
+                    style="text-align:center;width:40px; height:40px; background:white;border: 2px solid red; color: red"
+                    onclick="colse()"> &times;</span>
+                <br><br>
+                <center>
+                    <h1>Fruit categories and where they fall under</h1>
+                </center>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Fruits</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Melons</td>
+                            <td>watermelon, cantaloupe, honeydew</td>
+                        </tr>
+                        <tr>
+                            <td>Tropical Fruits</td>
+                            <td>pineapple, mango, papaya, guava, kiwi</td>
+                        </tr>
+                        <tr>
+                            <td>Berries</td>
+                            <td>mulberry, huckleberry, blueberry, raspberry, strawberry, blackberry</td>
+                        </tr>
+                        <tr>
+                            <td>Drupe</td>
+                            <td>peach, plum, cherry, apricot, nectarine</td>
+                        </tr>
+                        <tr>
+                            <td>Citrus</td>
+                            <td>orange, lemon, lime, grapefruit, tangerine</td>
+                        </tr>
+                        <tr>
+                            <td>Pomes</td>
+                            <td>apple, pear</td>
+                        </tr>
+                        <tr>
+                            <td>Dried Fruits</td>
+                            <td>raisin, date, apricot (dried)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
         </div>
         <div class="box">
             <a href="dashboard.php">DASHBOARD</a><span>ADD PRODUCTS</span>
         </div>
-
+        
+        <center>Don't know on which category does your fruit lie? click below</center>
+        <button class="btn" style="border: 2px solid green" onclick="openit()">View Categories</button>
         <div class="main">
             <section>
+                
                 <form action="" method="post" enctype="multipart/form-data">
                     <h1 class="h1Addproduct">ADD PRODUCTS</h1>
-
                     <div class="input-field">
                         <label for="">Product Name <sup>*</sup></label>
                         <input type="text" name="name" maxlength="20" placeholder="Add product name" required>
@@ -145,6 +245,7 @@ if (isset($_POST['publish']) || isset($_POST['draft'])) {
                     </div>
 
                     <footer class="addproduct-footer">
+
                         <button type="submit" name="publish" class="btn add-product-btn">Publish Product</button>
                         <button type="submit" name="draft" class="btn add-product-btn">Save as Draft</button>
                     </footer>
@@ -153,6 +254,20 @@ if (isset($_POST['publish']) || isset($_POST['draft'])) {
         </div>
     </div>
 
+
+
+
+    <script>
+        function openit() {
+            var modal = document.getElementById('myModal');
+            modal.style.display = 'block';
+        }
+
+        function colse() {
+            var modal = document.getElementById('myModal');
+            modal.style.display = 'none';
+        }
+    </script>
 </body>
 
 </html>
