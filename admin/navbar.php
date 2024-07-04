@@ -298,14 +298,13 @@ backdrop-filter:blur(20px);
 
         <p id="terminator">&times;</p>
         <?php
-        if (isset($_SESSION['id']) && $_SESSION['id'] != "") {
+        if (isset($_SESSION['adminid']) && $_SESSION['adminid'] != "") {
             echo '<strong style="font-size:18px;color:white">Email:</strong> <span style="font-size:18px;color:black;cursor:pointer ">' . $fetchadmin['useremail'] . ' </span><br><button style="font-size:18px; background:green; border:solid 2px green; border-radius:20px; "><a style="color:red;" href="admin_logout.php">log out from ' . $fetchadmin['useremail'];
             ' </button>';
 
         } else {
 
-            echo '<a href="login.php" class="btn">login</a>
-        <a href="signup.php" class="btn">signup</a>';
+            echo '<a href="login.php" class="btn">login</a>';
         }
         ?>
 
