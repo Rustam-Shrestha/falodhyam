@@ -222,7 +222,8 @@ if ($sellerid) {
 
                 <input type="submit" name="register" class="btn" id="regbtn" value="register now">
                 <p>already have an account ?<a href="login.php"> login now</a></p>
-
+                <br>
+                <p>Are you a buyer ?<a href="../buyer/home.php"> Buyer homepage</a></p>
             </form>
             <script>
 

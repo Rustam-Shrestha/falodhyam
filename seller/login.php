@@ -269,7 +269,8 @@ if (isset($_POST['login'])) {
 
                 <button type="submit" name="login" class="btn">login now</button>
                 <p>do not have an account ?<a href="register.php"> register now</a></p>
-
+                <br>
+                <p>Are you a buyer ?<a href="../buyer/home.php"> Buyer homepage</a></p>
             </form>
 
         </section>

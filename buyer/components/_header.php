@@ -44,10 +44,13 @@
         if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != "") {
             echo '<strong style="font-size:12px;color:white">Email:</strong> <span style="font-size:12px;color:white">'.$_SESSION['user_email'].' </span><br><button type="submit" name="logout" class="logout-btn btn">log out from '.$_SESSION['user_email'].' </button>';
             
+            echo '<a href="../seller/dashboard.php" class="btn">I am Seller</a>';
         } else {
              
             echo '<a href="login.php" class="btn">login</a>
         <a href="signup.php" class="btn">signup</a>';
+            echo '<a href="../seller/dashboard.php" class="btn">I am Seller</a>';
+           
         }
         ?>
 </div>

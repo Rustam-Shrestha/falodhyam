@@ -25,13 +25,14 @@ if (isset($_POST['publish']) || isset($_POST['draft'])) {
 
     if ($productprice < 10) {
         echo '<script>alert("Product price cannot be less than 10")</script>';
-    } elseif ($productstock < 10) {
-        echo '<script>alert("Product stock cannot be less than 10 ")</script>';
-    } else {
+    } else if($productstock<100) {
+        echo '<script>alert("Product stock cannot be less than 100 ")</script>';
+
+    }else{
         // $check_product = $conn->prepare("SELECT * FROM `products` WHERE `name` = ? AND `image` = ?");
         // $check_product->execute([$productname, $image]);
 
-        $check_productextra = $conn->prepare("SELECT * FROM `products` WHERE `image` = ? AND `s-id` = ? ");
+        $check_productextra = $conn->prepare("SELECT * FROM `products` WHERE `image` = ? AND `s-id` = ?");
         $check_productextra->execute([$image, $_SESSION['id']]);
         if ($check_productextra->rowCount() > 0) {
             echo '<script>alert("Duplicate Image of Product.")</script>';
@@ -78,11 +79,7 @@ if (isset($_POST['publish']) || isset($_POST['draft'])) {
     <title>Add Product Page</title>
     <link rel="stylesheet" href="style/original.css">
     <script>
-        function validateInput(input) {
-            if (input.value < 100) {
-                input.value = 100;
-            }
-        }
+        
     </script>
     <style>
         .modalrus {
@@ -208,13 +205,13 @@ if (isset($_POST['publish']) || isset($_POST['draft'])) {
 
                     <div class="input-field">
                         <label for="">Product Price Per Kg</label>
-                        <input type="number" name="price" placeholder="Add product price" required>
+                        <input type="number" min="10" name="price" placeholder="Add product price" required>
                     </div>
 
                     <div class="input-field">
                         <label for="">Available Stock</label>
-                        <input type="number" name="stock" step="1" placeholder="Add total product available"
-                            oninput="validateInput(this)" required>
+                        <input type="number" name="stock" step="1" min="100" value="100" placeholder="Add total product available"
+                             required>
                     </div>
 
                     <div class="input-field">
