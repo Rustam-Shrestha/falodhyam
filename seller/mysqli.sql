@@ -28,7 +28,7 @@ SELECT
     `s-name`,
     `s-email`,
     `s-password`,
-    `s-profile`
+å    `s-profile`
 FROM
     `seller`
 WHERE

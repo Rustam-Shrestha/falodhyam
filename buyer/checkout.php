@@ -16,14 +16,16 @@ if (isset($_POST['logout'])) {
 if (isset($_GET['overflow']) && $_GET['overflow'] == 1) {
     $warning_msg[] = "Not enough quantity in stock";
 }
+if (isset($_GET['invalid_qty']) && $_GET['invalid_qty'] == 1) {
+    $warning_msg[] = "Quantity must be greater than 0. Please enter a valid quantity.";
+}
 
 // Fetch user details
 $user_query = $con->prepare("SELECT * FROM `buyers` WHERE id = ?");
 $user_query->execute([$user_id]);
 $user_details = $user_query->fetch(PDO::FETCH_ASSOC);
 
-// When we place an order 
-// When we place an order 
+// When we place an order
 if (isset($_POST['place_order'])) {
     $name = $user_details['name'];
     $phone = $user_details['phone'];
@@ -43,8 +45,16 @@ if (isset($_POST['place_order'])) {
     $verify_cart = $con->prepare("SELECT * FROM `cart` WHERE user_id = ?");
     $verify_cart->execute([$user_id]);
 
-    // first way: directly buy a product
+    // First way: directly buy a product
     if (isset($_GET['get_id'])) {
+        // Check if qty is greater than 0
+        $quantity = isset($_GET['qty']) && $_GET['qty'] > 0 ? $_GET['qty'] : 0;
+
+        if ($quantity <= 0) {
+            header('Location: view_products.php?invalid_qty=1');
+            exit;
+        }
+
         // If we get product_id from URL
         $get_product = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status = ? LIMIT 1");
         $get_product->execute([$_GET['get_id'], "Active"]);
@@ -52,13 +62,13 @@ if (isset($_POST['place_order'])) {
         if ($get_product->rowCount() > 0) {
             $fetch_pro = $get_product->fetch(PDO::FETCH_ASSOC);
             $available_stock = $fetch_pro['available_stock'];
-            if ($available_stock >= $_GET['qty'] && $_GET['qty'] >= 1) {
-                $available_stock -= $_GET['qty'];
+            if ($available_stock >= $quantity && $quantity >= 1) {
+                $available_stock -= $quantity;
                 $update_stock = $con->prepare("UPDATE products SET available_stock = ? WHERE id = ?");
                 $update_stock->execute([$available_stock, $fetch_pro['id']]);
 
                 $insert_order = $con->prepare("INSERT INTO `orders` (`id`, `user_id`, `name`, `number`, `email`, `address`, `house_number`, `method`, `product_id`, `price`, `qty`, `s-id`, `date_ordered`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, 'pending')");
-                $insert_order->execute([uniqid(), $user_id, $name, $phone, $email, $address, $house_number, $method, $fetch_pro['id'], $fetch_pro['price'], $_GET['qty'], $fetch_pro['s-id']]);
+                $insert_order->execute([uniqid(), $user_id, $name, $phone, $email, $address, $house_number, $method, $fetch_pro['id'], $fetch_pro['price'], $quantity, $fetch_pro['s-id']]);
 
                 header('location: orders.php');
                 exit;
@@ -73,19 +83,28 @@ if (isset($_POST['place_order'])) {
         // If there are items in the cart
         if ($verify_cart->rowCount() > 0) {
             while ($fci = $verify_cart->fetch(PDO::FETCH_ASSOC)) {
+                // Ensure qty is valid (greater than 0)
+                $quantity = isset($fci['qty']) && $fci['qty'] > 0 ? $fci['qty'] : 0;
+
+                if ($quantity <= 0) {
+                    header('location: view_cart.php?invalid_qty=1');
+                    exit;
+                }
+
                 $get_product = $con->prepare("SELECT * FROM `products` WHERE id = ? AND status = ? LIMIT 1");
                 $get_product->execute([$fci['product_id'], "Active"]);
 
                 if ($get_product->rowCount() > 0) {
                     $fetch_pro = $get_product->fetch(PDO::FETCH_ASSOC);
                     $available_stock = $fetch_pro['available_stock'];
-                    if ($available_stock >= $fci['qty']) {
-                        $available_stock -= $fci['qty'];
+
+                    if ($available_stock >= $quantity) {
+                        $available_stock -= $quantity;
                         $update_stock = $con->prepare("UPDATE products SET available_stock = ? WHERE id = ?");
                         $update_stock->execute([$available_stock, $fetch_pro['id']]);
 
                         $insert_order = $con->prepare("INSERT INTO `orders` (`id`, `user_id`, `name`, `number`, `email`, `address`, `house_number`, `method`, `product_id`, `price`, `qty`, `s-id`, `date_ordered`, `status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, 'pending')");
-                        $insert_order->execute([uniqid(), $user_id, $name, $phone, $email, $address, $house_number, $method, $fetch_pro['id'], $fetch_pro['price'], $fci['qty'], $fetch_pro['s-id']]);
+                        $insert_order->execute([uniqid(), $user_id, $name, $phone, $email, $address, $house_number, $method, $fetch_pro['id'], $fetch_pro['price'], $quantity, $fetch_pro['s-id']]);
                     } else {
                         // Handle insufficient stock for a product in the cart
                         header('location: view_cart.php?overflow=1');
@@ -125,17 +144,25 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] == "") {
     exit();
 }
 
-if(isset($_GET['qty'])){
-$get_pro = $con->prepare("SELECT * FROM products WHERE id = ? AND status = ? LIMIT 1");
-$get_pro->execute([$_GET['get_id'], "Active"]);
+if (isset($_GET['qty'])) {
+    $quantity = isset($_GET['qty']) && $_GET['qty'] > 0 ? $_GET['qty'] : 0;
 
-$fetch_pro = $get_pro->fetch(PDO::FETCH_ASSOC);
-if ($fetch_pro['available_stock'] < $_GET['qty']) {
-    header('Location: view_products.php?overflow=1');
-    exit; // Important: Stop execution after redirection
-}
+    if ($quantity <= 0) {
+        header('Location: view_products.php?invalid_qty=1');
+        exit;
+    }
+
+    $get_pro = $con->prepare("SELECT * FROM products WHERE id = ? AND status = ? LIMIT 1");
+    $get_pro->execute([$_GET['get_id'], "Active"]);
+
+    $fetch_pro = $get_pro->fetch(PDO::FETCH_ASSOC);
+    if ($fetch_pro['available_stock'] < $quantity) {
+        header('Location: view_products.php?overflow=1');
+        exit;
+    }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 

@@ -56,7 +56,7 @@ if (isset($_POST['logout'])) {
 
                 <h1>Falodhyam Headquarters</h1>
                 <p>Ratukhola-11, Bhiman, Dhanusha</p>
-                <p>+977 9861473532 | santosh.787402@smc.tu.edu.np</p>
+                <p>+977 9861473532 | samirshekh2002731@gmail.com</p>
             </center>
     </section>
     <?php include "./components/_footer.php"; ?>
